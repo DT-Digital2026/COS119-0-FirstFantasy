@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="FirstFantasy/FirstFantasy.vcxproj" Id="47503b6d-4082-4af9-9f39-983258d71c43" />
+</Solution>
