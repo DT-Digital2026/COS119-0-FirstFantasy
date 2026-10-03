@@ -22,9 +22,19 @@ void Game::InitializeGame()
 
     std::cout << "\nStarting a new game..." << std::endl;
 
-    //Later we will:
     //Create the player characters.
+    //Initialize Ora'Kanu
+    OraKanu = Character("Ora'Kanu", "Voice of the Storm", 100, 100, 15, 10); 
+
+    //Intialize M'Batha
+    Mbatha = Character("M'Batha", "Father of Dhambe", 120, 60, 18, 15); 
+    
     //Set player stats.
+    OraKanu.DisplayStats(); 
+
+    std::cout << std::endl;
+
+    Mbatha.DisplayStats(); 
     //Create the starting inventory.
     //Set the starting location.
     //Set the initial story state.
