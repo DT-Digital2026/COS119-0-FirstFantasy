@@ -4,6 +4,7 @@
 
 class Character {
 public: 
+	//Method to display character stats. 
 	void DisplayStats() const;	
 
 	//Default constructor.
