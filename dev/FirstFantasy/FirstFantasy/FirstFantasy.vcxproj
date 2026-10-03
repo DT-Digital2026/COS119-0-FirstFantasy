@@ -139,6 +139,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Beastiary.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CombatSystem.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="PLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Beastiary.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CombatSystem.h" />
     <ClInclude Include="Enemy.h" />
