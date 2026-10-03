@@ -1,11 +1,13 @@
 #include <iostream>
 
 #include "Menu.h"
+#include "Game.h"
 
 int main()
 {
     //Created menu object. 
     Menu menu; 
+    Game game; 
 
     //Bool variable for program running. 
     bool IsPgmRunning = true; 
@@ -16,8 +18,7 @@ int main()
         
         switch(choice) {
         case 1:
-            //New Game
-            //Placeholder 
+            game.StartNewGame(); 
             break; 
 
         case 2: 

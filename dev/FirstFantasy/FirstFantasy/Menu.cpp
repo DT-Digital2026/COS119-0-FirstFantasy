@@ -60,46 +60,60 @@ int Menu::GetValidMenuChoice(int minChoice, int maxChoice)
 }
 
 void Menu::HowToPlay() {
+    //Overall self explanitory. Created a how to play menu with instructions on basic gameplay.
     std::cout << "======================================================================================================================" << std::endl;
     std::cout << "                                                     How to Play                                                      " << std::endl;
     std::cout << "======================================================================================================================" << std::endl;
 
     std::cout << "Exploration: " << std::endl;
     std::cout << "Choose numbered options to explore locations, investigate your surroundings, speak with NPC's, and progress the story." << std::endl;
+    std::cout << "\n";
 
     std::cout << "Combat: " << std::endl;
     std::cout << "Enjoy turn based combat.Choose attacks, abilities, defensive actions, or items during your turn." << std::endl;
+    std::cout << "\n";
 
     std::cout << "Enemy Attacks:" << std::endl;
     std::cout << "Enemies may telegraph their attacks.Pay attention to their behavior and choose how to react." << std::endl;
+    std::cout << "\n";
 
     std::cout << "Dodge: " << std::endl;
     std::cout << "Attempt to avoid an incoming attack." << std::endl;
+    std::cout << "\n";
 
     std::cout << "Guard: " << std::endl;
     std::cout << "Reduce damage from an incoming attack." << std::endl; 
+    std::cout << "\n";
 
     std::cout << "Parry: " << std::endl;
     std::cout << "A riskier defensive option that may interrupt and enemy attack and create an opportunity to counter." << std::endl;
+    std::cout << "\n";
 
     std::cout << "Health: " << std::endl;
     std::cout << "HP Represents a players health.If the entire party reaches 0, the party is defeated." << std::endl;
+    std::cout << "\n";
 
     std::cout << "Ase: " << std::endl;
     std::cout << "In Yoruban cosmology, Ase is the divine life force that flows through all.In First Fantasy, Ase replaces mana as the resource to spend on abilities." << std::endl;
+    std::cout << "\n";
 
     std::cout << "Inventory: " << std::endl;
     std::cout << "Collect and use consumables, weapons, armor, and important story items throughout the adventure." << std::endl;
+    std::cout << "\n";
 
     std::cout << "Saving: " << std::endl;
     std::cout << "Save your progress during exploration and load your saved adventure from the main menu." << std::endl;
+    std::cout << "\n";
 
     std::cout << "Press enter to return to the main menu..."; 
+    std::cout << "\n";
+
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
     std::cin.get(); 
     }
 
 void Menu::DisplayLore() {
+    //Created a lore menu to detial some of the information about the games world.
     bool LoreMenuRunning = true; 
 
     while (LoreMenuRunning) {
@@ -119,7 +133,7 @@ void Menu::DisplayLore() {
         case 1:
             std::cout << "==============================================================================================" << std::endl;
             std::cout << "                                       World Lore                                             " << std::endl;
-            std::cout << "==============================================================================================" << std::endl;            break;
+            std::cout << "==============================================================================================" << std::endl;            
 
             std::cout << "The World of Akantha " << std::endl;
             std::cout << "Akantha is an isolated and largely unexplored continent." << std::endl;
@@ -209,9 +223,10 @@ void Menu::DisplayLore() {
         case 2:
             std::cout << "==============================================================================================" << std::endl;
             std::cout << "                                   Character Lore                                             " << std::endl;
-            std::cout << "==============================================================================================" << std::endl;              break;
+            std::cout << "==============================================================================================" << std::endl;              
 
             std::cout << "Ora'Kanu - Voice of the Storm" << std::endl;
+            std::cout << "\n";
 
             std::cout << "Ora is one of the younger Orisha's that walk the lands of Akantha." << std::endl;
 
@@ -237,6 +252,7 @@ void Menu::DisplayLore() {
             std::cout << "\n";
 
             std::cout << "M'Batha - Father of Dhambe" << std::endl;
+            std::cout << "\n";
 
             std::cout << "M'Batha is a powerful warrior whose fighting style taught others the traditions of Dhambe." << std::endl;
             std::cout << "His body is his weapon." << std::endl;
@@ -268,7 +284,7 @@ void Menu::DisplayLore() {
         case 3:
             std::cout << "==============================================================================================" << std::endl;
             std::cout << "                                    Location Lore                                             " << std::endl;
-            std::cout << "==============================================================================================" << std::endl;              break;
+            std::cout << "==============================================================================================" << std::endl;              
 
             std::cout << "The Continent of Akantha" << std::endl;
 
@@ -316,39 +332,50 @@ void Menu::DisplayLore() {
         case 4:
             std::cout << "==============================================================================================" << std::endl;
             std::cout << "                                       Beastiary                                              " << std::endl;
-            std::cout << "==============================================================================================" << std::endl;              break;
+            std::cout << "==============================================================================================" << std::endl;              
 
             std::cout << "Venomous Snake" << std::endl;
             std::cout << "Common throughout the wilds of Akantha, venomous snakes rely on speed and dangerous bites to bring down prey." << std::endl;
+            std::cout << "\n";
 
             std::cout << "Hyena" << std::endl;
             std::cout << "Aggresive pack hunters that roam the wilderness. A loan hyena is dangerous, a pack is far worse." << std::endl; 
+            std::cout << "\n";
 
             std::cout << "Bat" << std::endl;
             std::cout << "Common across Akantha, especially in caves and dense forests. Large gatherings signal danger nearby." << std::endl;
+            std::cout << "\n";
 
             std::cout << "Leopard" << std::endl;
             std::cout << "Powerful and patient predators that stalk prey from concealment." << std::endl;
+            std::cout << "\n";
 
             std::cout << "Crocodile" << std::endl;
             std::cout << "Massive reptiles found along river's and wetlands that strike with brutal bite force." << std::endl;
+            std::cout << "\n";
 
             std::cout << "Vampire Bat" << std::endl;
             std::cout << "An unnatrual relative of the common bat with a voracious hunger for blood." << std::endl;
+            std::cout << "\n";
 
             std::cout << "Bat Swarm" << std::endl;
             std::cout << "A mass of bats capable of overwhelming prey through sheer numbers." << std::endl;
+            std::cout << "\n";
 
             std::cout << "Bonsam Thrall" << std::endl;
             std::cout << "Servants bound to the will of the bonsam, whatever lives they once possessed have been abandoned." << std::endl;
+            std::cout << "\n";
 
             std::cout << "Bonsam" << std::endl;
             std::cout << "Ancient vampiric beings feared across the plains. Their true nature is surrounded by myth and legend." << std::endl;
+            std::cout << "\n";
 
             std::cout << "Elder Bonsam" << std::endl;
             std::cout << "Those that rule the Bonsam." << std::endl;
-            
+            std::cout << "\n";
+
             std::cout << "Press Enter to return to the Lore Menu." << std::endl;
+            std::cout << "\n";
 
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.get();
@@ -363,6 +390,7 @@ void Menu::DisplayLore() {
     }
  }
 void Menu::DisplayCredits() {
+    //Blah blah blah, credits.
     std::cout << "==============================================================================================" << std::endl;
     std::cout << "                                    Credits                                                   " << std::endl;
     std::cout << "==============================================================================================" << std::endl;              
@@ -370,10 +398,12 @@ void Menu::DisplayCredits() {
     std::cout << "First Fantasy: The Dark Continent." << std::endl;
 
     std::cout << "Created and Developed by....and literally everything else: Brad Watson" << std::endl;
+
+    std::cout << "\n"; 
 }
 
-bool Menu::ConfirmExit()
-{
+bool Menu::ConfirmExit(){
+    //Exit game function. 
     std::cout << "Are you sure you want to exit?" << std::endl;
     std::cout << "1. Yes" << std::endl;
     std::cout << "2. No" << std::endl;
