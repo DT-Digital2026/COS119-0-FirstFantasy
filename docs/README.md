@@ -1,21 +1,43 @@
 # Docs.
+# First Fantasy: The Dark Continent
 
-This folder is for miscellaneous documentation. 
+## Development Notes
 
-It's common for repositories to contain documentation provided by the developers or team working on projects together.   
+This document tracks the development progress of First Fantasy: The Dark Continent.
 
-In this class you may be asked to work on documentation that can be stored in this folder. 
+---
 
+## v0.01 - Core Framework
 
+### Completed
 
+- Main menu system
+- Game class and game loop
+- Character class
+- Ora'Kanu and M'Batha
+- HP and Ase management
+- Enemy class
+- Enemy HP management
+- Bestiary
+- Initial enemy balance
 
+### Next Milestone - v0.02
 
+- Basic combat system
+- Player attacks
+- Enemy attacks
+- Damage calculation
+- Victory condition
+- Defeat condition
 
+### Future Features
 
-
-
-
-
-
+- Dodge
+- Guard
+- Parry
+- Enemy attack telegraphs
+- Ase abilities
+- FF1-inspired combat interface
+- Clear/redraw combat screen
 
 
