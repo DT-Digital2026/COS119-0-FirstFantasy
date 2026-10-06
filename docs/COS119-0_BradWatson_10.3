@@ -1,0 +1,1198 @@
+# First Fantasy: The Dark Continent
+
+## C++ Console RPG
+
+**Current Version:** v0.01  
+**Project Type:** C++ Console Application  
+**Language:** C++  
+**Development Environment:** Visual Studio  
+**Repository Workflow:** Git / GitHub  
+
+---
+
+# Project Overview
+
+**First Fantasy: The Dark Continent** is a text-based role-playing game being developed as a C++ console application.
+
+The project serves two purposes:
+
+1. Fulfill the requirements of the Programming 1 portfolio project.
+2. Establish an early systems prototype for the larger First Fantasy game concept.
+
+The console version focuses on building the underlying game systems before expanding those concepts into a graphical version of the game.
+
+The current version, **v0.01**, establishes the core application framework, player character system, enemy system, and initial enemy bestiary.
+
+---
+
+# Version History
+
+## v0.01 - Core Framework
+
+### Implemented
+
+- Main application loop
+- Main menu
+- Menu input validation
+- New Game option
+- Load Game menu option
+- How to Play screen
+- Lore menu
+- Credits screen
+- Exit confirmation
+- Game class
+- Game initialization
+- Basic game loop
+- Character class
+- Starting party initialization
+- Character HP management
+- Character Ase management
+- Character stat display
+- Enemy class
+- Enemy HP management
+- Enemy stat display
+- Bestiary class
+- Initial enemy stat table
+
+### Not Yet Implemented
+
+- Combat
+- Enemy special attacks
+- Ase abilities
+- Inventory
+- Items
+- Equipment
+- Exploration
+- Locations
+- Story progression
+- Experience
+- Leveling
+- Save/Load functionality
+- Reactive defense
+- Dodge
+- Guard
+- Parry
+- Final battle interface
+
+---
+
+# Current Program Structure
+
+The program is currently divided into several systems.
+
+```text
+Main
+ │
+ ├── Menu
+ │
+ └── Game
+      │
+      ├── Character
+      │    ├── Ora'Kanu
+      │    └── M'Batha
+      │
+      └── Enemy
+           │
+           └── Bestiary
+```
+
+Each class is responsible for a specific part of the program.
+
+---
+
+# Main Application
+
+The main application controls the overall program flow.
+
+The player begins at the Main Menu and selects what part of the program to enter.
+
+Current Main Menu options:
+
+1. New Game
+2. Load Game
+3. How to Play
+4. Lore
+5. Credits
+6. Exit
+
+Selecting **New Game** transfers control to the `Game` class.
+
+The application continues running until the player confirms that they want to exit.
+
+---
+
+# Menu System
+
+The `Menu` class handles the primary user interface outside of active gameplay.
+
+## Current Responsibilities
+
+- Display the Main Menu
+- Validate menu input
+- Display How to Play information
+- Display Lore
+- Display Credits
+- Confirm program exit
+
+## Current Functions
+
+```cpp
+DisplayMainMenu()
+GetValidMenuChoice()
+HowToPlay()
+DisplayLore()
+DisplayCredits()
+ConfirmExit()
+```
+
+---
+
+# Lore Menu
+
+The Lore menu provides additional information about the world of First Fantasy.
+
+Current categories include:
+
+1. World
+2. Characters
+3. Locations
+4. Bestiary
+5. Return to Main Menu
+
+This system currently serves as a text-based encyclopedia for the game's setting.
+
+Additional lore can be added as development continues.
+
+---
+
+# Game Class
+
+The `Game` class manages the actual game session.
+
+Rather than placing gameplay systems directly inside `main.cpp`, gameplay is handed to a `Game` object.
+
+## Current Responsibilities
+
+- Start a new game
+- Initialize game state
+- Maintain whether the game is running
+- Maintain the starting party
+- Execute the game loop
+
+## Current Functions
+
+```cpp
+void StartNewGame();
+
+void InitializeGame();
+
+void GameLoop();
+```
+
+## Game State
+
+The game currently tracks whether gameplay is active using:
+
+```cpp
+bool IsGameRunning;
+```
+
+---
+
+# Starting Party
+
+The current party consists of two characters.
+
+## Ora'Kanu
+
+**Title:** Voice of the Storm
+
+Ora'Kanu is an Ase-wielding character associated with storms and weather.
+
+Current prototype statistics:
+
+```text
+Level:   1
+HP:      100 / 100
+Ase:     100 / 100
+Attack:  15
+Defense: 10
+```
+
+---
+
+## M'Batha
+
+**Title:** Father of Dhambe
+
+M'Batha is a powerful physical fighter whose combat style centers around Dhambe.
+
+Current prototype statistics:
+
+```text
+Level:   1
+HP:      120 / 120
+Ase:      60 / 60
+Attack:   18
+Defense:  15
+```
+
+These values are prototype values and may change as combat balancing progresses.
+
+---
+
+# Character System
+
+The `Character` class represents playable characters.
+
+The class contains the information required to describe a character and their basic combat statistics.
+
+## Character Data
+
+```text
+Name
+Title
+Level
+
+Current HP
+Maximum HP
+
+Current Ase
+Maximum Ase
+
+Attack
+Defense
+```
+
+Conceptually, the class contains:
+
+```cpp
+std::string mName;
+std::string mTitle;
+
+int mLevel;
+
+int mHP;
+int mMaxHP;
+
+int mAse;
+int mMaxAse;
+
+int mAttack;
+int mDefense;
+```
+
+---
+
+# Character Constructors
+
+## Default Constructor
+
+The default constructor creates an empty Character with safe starting values.
+
+```text
+Name:    Empty
+Title:   Empty
+Level:   1
+
+HP:      0 / 0
+Ase:     0 / 0
+
+Attack:  0
+Defense: 0
+```
+
+## Overloaded Constructor
+
+The overloaded constructor allows a complete Character to be initialized.
+
+Parameters:
+
+```text
+Name
+Title
+Maximum HP
+Maximum Ase
+Attack
+Defense
+```
+
+New characters begin with full HP and full Ase.
+
+Conceptually:
+
+```text
+Maximum HP = supplied Max HP
+Current HP = Maximum HP
+
+Maximum Ase = supplied Max Ase
+Current Ase = Maximum Ase
+```
+
+---
+
+# Character Getters
+
+The Character class currently provides getters for its stored information.
+
+```cpp
+GetName()
+GetTitle()
+GetLevel()
+
+GetHP()
+GetMaxHP()
+
+GetAse()
+GetMaxAse()
+
+GetAttack()
+GetDefense()
+```
+
+The getter functions are marked `const` because retrieving character information should not modify the Character object.
+
+---
+
+# Character Setters
+
+The Character class currently contains setters for HP and Ase.
+
+```cpp
+SetHP()
+SetAse()
+```
+
+Both setters protect the Character from invalid resource values.
+
+## HP Rules
+
+```text
+If HP < 0
+    HP becomes 0
+
+If HP > Maximum HP
+    HP becomes Maximum HP
+
+Otherwise
+    HP becomes the supplied value
+```
+
+Therefore:
+
+```text
+0 <= HP <= Maximum HP
+```
+
+## Ase Rules
+
+The same protection is used for Ase.
+
+```text
+If Ase < 0
+    Ase becomes 0
+
+If Ase > Maximum Ase
+    Ase becomes Maximum Ase
+
+Otherwise
+    Ase becomes the supplied value
+```
+
+Therefore:
+
+```text
+0 <= Ase <= Maximum Ase
+```
+
+---
+
+# Character Stat Display
+
+The Character class contains:
+
+```cpp
+DisplayStats()
+```
+
+This function displays the Character's current information to the console.
+
+Example:
+
+```text
+Name: Ora'Kanu
+Title: Voice of the Storm
+Level: 1
+HP: 100 / 100
+Ase: 100 / 100
+Attack: 15
+Defense: 10
+```
+
+---
+
+# Enemy System
+
+The `Enemy` class represents enemies encountered during gameplay.
+
+The initial version deliberately keeps enemies simple.
+
+Special attacks, status effects, elemental properties, and unique behaviors will be added in later development passes.
+
+## Enemy Data
+
+```text
+Name
+Current HP
+Maximum HP
+Attack
+Defense
+```
+
+Conceptually:
+
+```cpp
+std::string mName;
+
+int mHP;
+int mMaxHP;
+
+int mAttack;
+int mDefense;
+```
+
+---
+
+# Enemy Constructors
+
+## Default Constructor
+
+The default Enemy constructor initializes an empty Enemy.
+
+```text
+Name:    Empty
+HP:      0 / 0
+Attack:  0
+Defense: 0
+```
+
+## Overloaded Constructor
+
+The overloaded Enemy constructor receives:
+
+```text
+Name
+Maximum HP
+Attack
+Defense
+```
+
+When an Enemy is created:
+
+```text
+Maximum HP = supplied Maximum HP
+Current HP = Maximum HP
+```
+
+This causes every newly created enemy to begin at full health.
+
+---
+
+# Enemy Getters
+
+The Enemy class currently provides:
+
+```cpp
+GetName()
+
+GetHP()
+GetMaxHP()
+
+GetAttack()
+GetDefense()
+```
+
+---
+
+# Enemy HP Setter
+
+Enemy HP is controlled using:
+
+```cpp
+SetHP()
+```
+
+The setter prevents enemy HP from exceeding its valid range.
+
+```text
+If HP < 0
+    HP = 0
+
+Else if HP > Maximum HP
+    HP = Maximum HP
+
+Else
+    HP = supplied value
+```
+
+Therefore:
+
+```text
+0 <= Enemy HP <= Enemy Maximum HP
+```
+
+This system establishes the basic functionality required for enemies to take damage during future combat.
+
+---
+
+# Enemy Stat Display
+
+Enemies can display their current statistics using:
+
+```cpp
+DisplayStats()
+```
+
+Example:
+
+```text
+Name: Venomous Snake
+HP: 35 / 35
+Attack: 8
+Defense: 3
+```
+
+---
+
+# Bestiary
+
+The `Bestiary` class serves as the current enemy factory.
+
+Instead of repeatedly defining enemy statistics throughout the program, the Bestiary contains functions responsible for constructing predefined Enemy objects.
+
+This provides a central location for enemy definitions.
+
+---
+
+# Bestiary Functions
+
+The current Bestiary contains:
+
+```cpp
+CreateVenomousSnake()
+
+CreateBat()
+
+CreateHyena()
+
+CreateLeopard()
+
+CreateCrocodile()
+
+CreateVampireBat()
+
+CreateBatSwarm()
+
+CreateBonsamThrall()
+
+CreateBonsam()
+
+CreateBonsamElder()
+```
+
+Each function returns an `Enemy` object.
+
+Example concept:
+
+```text
+Request Venomous Snake
+        |
+        v
+Bestiary creates Enemy
+        |
+        v
+Name: Venomous Snake
+HP: 35
+Attack: 8
+Defense: 3
+        |
+        v
+Return Enemy
+```
+
+---
+
+# v0.01 Enemy Balance Table
+
+These values represent the initial prototype balance.
+
+They are expected to change after combat testing begins.
+
+| Enemy | HP | Attack | Defense |
+|---|---:|---:|---:|
+| Venomous Snake | 35 | 8 | 3 |
+| Bat | 25 | 7 | 2 |
+| Hyena | 50 | 11 | 5 |
+| Leopard | 70 | 15 | 7 |
+| Crocodile | 90 | 14 | 12 |
+| Vampire Bat | 55 | 13 | 6 |
+| Bat Swarm | 80 | 12 | 4 |
+| Bonsam Thrall | 100 | 16 | 10 |
+| Bonsam | 140 | 19 | 12 |
+| Bonsam Elder | 250 | 22 | 15 |
+
+---
+
+# Enemy Roles
+
+Although v0.01 enemies currently use only basic statistics and attacks, their intended identities are:
+
+### Venomous Snake
+
+Early-game enemy intended to eventually introduce poison.
+
+### Bat
+
+Low-HP enemy intended to eventually emphasize speed or evasion.
+
+### Hyena
+
+Aggressive physical enemy intended for early wilderness encounters.
+
+### Leopard
+
+Stronger predator intended to represent a more dangerous wilderness encounter.
+
+### Crocodile
+
+High-defense enemy intended to encourage alternatives to basic physical attacks.
+
+### Vampire Bat
+
+Supernatural dungeon enemy intended to eventually use life-draining abilities.
+
+### Bat Swarm
+
+Group-style enemy intended to eventually introduce multi-hit or multi-target mechanics.
+
+### Bonsam Thrall
+
+Stronger humanoid enemy associated with the Bonsam.
+
+### Bonsam
+
+Intelligent supernatural enemy intended to use more advanced combat behavior.
+
+### Bonsam Elder
+
+Major boss encounter for the current adventure.
+
+These special behaviors are **not implemented in v0.01**.
+
+---
+
+# Current Combat Statistics
+
+The current prototype uses four primary combat resources/statistics.
+
+## HP
+
+Represents a character or enemy's current health.
+
+When HP reaches zero, the combatant will eventually be considered defeated.
+
+## Ase
+
+Ase is the resource used by playable characters for special abilities.
+
+Ase abilities are planned but are not implemented in v0.01.
+
+## Attack
+
+Represents offensive physical power.
+
+## Defense
+
+Represents resistance to incoming physical damage.
+
+---
+
+# Planned Basic Damage Formula
+
+The first combat prototype is planned to use:
+
+```text
+Damage = Attack - Defense
+```
+
+Damage will have a minimum value of:
+
+```text
+1
+```
+
+Conceptually:
+
+```text
+Calculate attacker Attack - defender Defense
+
+If result < 1
+    Damage = 1
+
+Subtract Damage from defender HP
+```
+
+This system is planned for the combat prototype and is not part of the completed v0.01 framework.
+
+---
+
+# Planned Combat System
+
+The next major system is the Combat class.
+
+The first combat prototype will deliberately remain simple.
+
+## v0.02 Combat Goals
+
+```text
+Start Battle
+     |
+     v
+Display Battle Information
+     |
+     v
+Player Chooses Action
+     |
+     v
+Player Attacks Enemy
+     |
+     v
+Enemy Attacks Player
+     |
+     v
+Check HP
+     |
+     +---- Enemy HP <= 0 ----> Victory
+     |
+     +---- Player HP <= 0 ---> Defeat
+     |
+     v
+Repeat Battle
+```
+
+Initial combat will use only basic attacks.
+
+Advanced mechanics will be implemented only after the basic battle loop works correctly.
+
+---
+
+# Planned Reactive Combat
+
+The long-term combat design uses a reactive turn-based system.
+
+Enemies will eventually telegraph attacks through descriptive text.
+
+The player will then choose how to respond.
+
+Planned defensive actions include:
+
+### Dodge
+
+Safer defensive option focused on avoiding damage.
+
+### Guard
+
+Reduces incoming damage.
+
+### Parry
+
+Higher-risk defensive option.
+
+A successful parry may interrupt an enemy attack or create a counterattack opportunity.
+
+A failed parry may result in taking the full attack.
+
+These systems are planned for a later version and are **not implemented in v0.01**.
+
+---
+
+# Planned Battle Interface
+
+The combat interface is intended to take inspiration from classic console JRPG battle screens.
+
+A possible layout:
+
+```text
+============================================================
+                       FIRST FANTASY
+============================================================
+
+       ENEMIES                         PARTY
+
+   Venomous Snake              Ora'Kanu
+   HP: 35 / 35                 HP: 100 / 100
+                               Ase: 100 / 100
+
+                               M'Batha
+                               HP: 120 / 120
+                               Ase: 60 / 60
+
+------------------------------------------------------------
+ COMMAND
+------------------------------------------------------------
+
+        1. ATTACK
+        2. ASE
+        3. ITEM
+        4. DEFEND
+
+------------------------------------------------------------
+ What will Ora'Kanu do?
+ >
+```
+
+This interface has not yet been implemented.
+
+---
+
+# Planned Console Redraw System
+
+A future version of combat is planned to use a **clear/redraw approach**.
+
+Instead of continuously printing new combat information down the console, the game will eventually:
+
+```text
+Player selects action
+        |
+        v
+Resolve action
+        |
+        v
+Update game state
+        |
+        v
+Clear console
+        |
+        v
+Redraw battle screen
+```
+
+This should allow the console application to behave more like a traditional JRPG interface.
+
+The system will be implemented only after the basic combat loop is functional.
+
+---
+
+# Planned Inventory System
+
+Inventory has not yet been implemented.
+
+The planned inventory system will eventually support:
+
+- Consumables
+- Weapons
+- Armor
+- Key Items
+
+Potential early items include:
+
+- Health Potion
+- Ase Potion
+- Dhambe Wraps
+- Ora'Kanu's Bracers
+- Story-related key items
+
+A vector is planned to store inventory items.
+
+---
+
+# Planned Exploration
+
+The current adventure is intended to move through several major areas.
+
+```text
+Village
+   |
+   v
+Wilderness
+   |
+   v
+Bonsam Territory
+   |
+   v
+Bonsam Dungeon
+   |
+   v
+Elder Bonsam
+   |
+   v
+Resolution
+```
+
+Exploration functionality has not yet been implemented.
+
+---
+
+# Planned Story Progression
+
+The adventure centers around the disappearance of children from a remote village.
+
+The party will investigate the disappearances, travel through the wilderness, encounter the Bonsam, and eventually discover the truth surrounding the missing children.
+
+Potential story progression states include:
+
+```text
+Missing Children
+Signs of Bonsam
+Wilderness Investigation
+Bloodroot Hollow
+Discovery of the Truth
+Resolution
+```
+
+Story progression and story flags are planned for later development.
+
+---
+
+# Planned Save System
+
+Save/Load functionality has not yet been implemented.
+
+The eventual save system is intended to preserve information such as:
+
+- Character levels
+- Character HP
+- Character Ase
+- Inventory
+- Equipment
+- Current location
+- Story progression
+- Important decisions
+
+The Load Game option already exists in the Main Menu so that the functionality can be connected later.
+
+---
+
+# Development Philosophy
+
+The project follows a simple development rule:
+
+> First make it work, then make it better.
+
+Systems are initially developed as small functional prototypes.
+
+The development process follows:
+
+```text
+Design
+  |
+  v
+Pseudocode
+  |
+  v
+Basic Implementation
+  |
+  v
+Compile
+  |
+  v
+Test
+  |
+  v
+Debug
+  |
+  v
+Commit
+  |
+  v
+Improve Later
+```
+
+Advanced mechanics and presentation features are deliberately postponed until their underlying systems work.
+
+---
+
+# Current Class Relationships
+
+```text
++-------------------+
+|       Main        |
++---------+---------+
+          |
+          v
++-------------------+
+|       Menu        |
++-------------------+
+
+          |
+          v
+
++-------------------+
+|       Game        |
++---------+---------+
+          |
+          +----------------------+
+          |                      |
+          v                      v
++-------------------+    +-------------------+
+|    Character      |    |      Enemy        |
++-------------------+    +---------+---------+
+                                    ^
+                                    |
+                           +--------+---------+
+                           |     Bestiary     |
+                           +------------------+
+```
+
+The goal is to keep responsibilities separated so that individual systems can be expanded without placing the entire game inside `main.cpp`.
+
+---
+
+# Source File Responsibilities
+
+## `main.cpp`
+
+Responsible for the primary application flow and connecting the Menu and Game systems.
+
+## `Menu.h / Menu.cpp`
+
+Responsible for menu screens, menu input, lore, credits, instructions, and exit confirmation.
+
+## `Game.h / Game.cpp`
+
+Responsible for starting and maintaining an active game session and holding the current player characters.
+
+## `Character.h / Character.cpp`
+
+Responsible for playable character data and basic character behavior.
+
+## `Enemy.h / Enemy.cpp`
+
+Responsible for enemy data and basic enemy behavior.
+
+## `Bestiary.h / Bestiary.cpp`
+
+Responsible for constructing the predefined enemies used by First Fantasy.
+
+---
+
+# Current Development Status
+
+## v0.01
+
+**Status: Core Framework**
+
+The project currently has enough structure to:
+
+- Start the application
+- Navigate the Main Menu
+- Start a game
+- Initialize the starting party
+- Create Character objects
+- Safely modify Character HP and Ase
+- Display Character statistics
+- Create Enemy objects
+- Safely modify Enemy HP
+- Display Enemy statistics
+- Generate predefined enemies through the Bestiary
+
+The next major milestone is the first playable combat prototype.
+
+---
+
+# v0.02 Development Goals
+
+## Combat Prototype
+
+Planned objectives:
+
+- Create Combat class
+- Connect Character and Enemy
+- Start a battle
+- Display combatants
+- Allow player basic attack
+- Allow enemy basic attack
+- Calculate damage
+- Modify HP
+- Detect enemy defeat
+- Detect player defeat
+- End combat correctly
+- Return control to the game
+
+The first combat version will intentionally avoid advanced mechanics.
+
+Once basic combat is stable, later versions can introduce:
+
+- Ase abilities
+- Multiple enemies
+- Multiple active party members
+- Dodge
+- Guard
+- Parry
+- Attack telegraphs
+- Enemy special abilities
+- Status effects
+- Items
+- Equipment
+- Improved battle presentation
+- Clear/redraw console interface
+
+---
+
+# Development Roadmap
+
+```text
+v0.01
+Core Framework
+    ✓ Menu
+    ✓ Game
+    ✓ Character
+    ✓ Enemy
+    ✓ Bestiary
+
+        |
+        v
+
+v0.02
+Basic Combat
+
+        |
+        v
+
+Inventory / Items
+
+        |
+        v
+
+Exploration / Locations
+
+        |
+        v
+
+Story Progression
+
+        |
+        v
+
+Save / Load
+
+        |
+        v
+
+Combat Expansion
+
+        |
+        v
+
+UI / Console Polish
+```
+
+---
+
+# Project Goal
+
+The immediate goal is to create a complete, functional C++ console RPG while demonstrating proper use of object-oriented programming and interacting game systems.
+
+The longer-term purpose of the project is to prototype the gameplay systems and design concepts that can eventually form the foundation of a larger version of:
+
+# First Fantasy: The Dark Continent

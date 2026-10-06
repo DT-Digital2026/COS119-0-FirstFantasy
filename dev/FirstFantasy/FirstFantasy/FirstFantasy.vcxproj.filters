@@ -45,6 +45,12 @@
     <ClCompile Include="Beastiary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemCatalog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FirstFantasy.h">
@@ -75,6 +81,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Beastiary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemCatalog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
