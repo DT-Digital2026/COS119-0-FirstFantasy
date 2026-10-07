@@ -1,5 +1,7 @@
 #include <iostream>
 #include <limits>
+#include <string>
+#include <stdexcept>
 
 #include "Menu.h"
 
@@ -24,39 +26,52 @@ int Menu::DisplayMainMenu()
 
 int Menu::GetValidMenuChoice(int minChoice, int maxChoice)
 {
-    int choice;
+    std::string input;
 
     while (true)
     {
         std::cout << "Enter your choice: ";
-        std::cin >> choice;
+        std::getline(std::cin, input);
+    try
+    {
+        // Tracks how many characters stoi successfully converts.
+        std::size_t processedCharacters;
 
-        // Checks if the user entered something other than an integer.
-        if (std::cin.fail())
+        // Attempts to convert the user's string input into an integer.
+        int choice = std::stoi(input, &processedCharacters);
+
+        // Checks whether the entire input was converted.
+        // Prevents something like "2banana" from being accepted as 2.
+        if (processedCharacters != input.length())
         {
-            std::cout << "Invalid input. Please enter an integer between "
-                << minChoice << " and " << maxChoice << "." << std::endl;
-
-            // Clears the error state caused by invalid input.
-            std::cin.clear();
-
-            // Removes the invalid input remaining in the input buffer.
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            throw std::invalid_argument("Input contains non-numeric characters.");
         }
 
         // Checks if the integer is outside the allowed menu range.
-        else if (choice < minChoice || choice > maxChoice)
+        if (choice < minChoice || choice > maxChoice)
         {
             std::cout << "Invalid choice. Please enter a number between "
                 << minChoice << " and " << maxChoice << "." << std::endl;
         }
-
-        // Input is an integer AND within the allowed range.
         else
         {
+            // Input is an integer AND within the allowed range.
             return choice;
         }
     }
+    catch (const std::invalid_argument&)
+    {
+        // stoi could not convert the input into a valid integer.
+        std::cout << "Invalid input. Please enter an integer between "
+            << minChoice << " and " << maxChoice << "." << std::endl;
+    }
+    catch (const std::out_of_range&)
+    {
+        // The number was too large or too small for an int.
+        std::cout << "Invalid input. Please enter an integer between "
+            << minChoice << " and " << maxChoice << "." << std::endl;
+    }
+}
 }
 
 void Menu::HowToPlay() {
