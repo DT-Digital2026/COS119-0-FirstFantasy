@@ -4,16 +4,33 @@
 
 //Default Constructor.
 Location::Location() {
+	mID = 0; //v.02 Added location ID to default constructor. 
 	mName = "";
 	mDescription = "";
 	mEncounterChance = 0;
 }
 
 //Overloaded Constructor.
-Location::Location(const std::string& Name, const std::string& Description, int EncounterChance) {
+Location::Location(const int LocationID, const std::string& Name, const std::string& Description, int EncounterChance) {
+	mID = LocationID; //v.02 Added LocationId parameters to overloaded constructor. 
 	mName = Name;
 	mDescription = Description;
 	mEncounterChance = EncounterChance;
+}
+
+//v.02 GetLocationID method. 
+int Location::GetLocationID() const {
+	return mID; 
+}
+
+//v.02 Vector to store the locations and their connections. 
+const std::vector<int>& Location::GetConnections() const {
+	return mDestinationID; 
+}
+
+//v.02 Connection method.
+void Location::AddConnection(const int DestinationID) {
+	mDestinationID.push_back(DestinationID); 
 }
 
 //Gets the location name.

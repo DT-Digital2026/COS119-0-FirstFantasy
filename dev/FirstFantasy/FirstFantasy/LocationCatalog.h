@@ -11,6 +11,12 @@ public:
 	//Location catalog methods. 
 	Location CreateRoadtoVillage(); 
 
+	Location CreateCrossroads(); //v.02 Location creation for the crossroads.
+
+	Location CreateRiverPath(); //v.02 Location creation for the crossroads.
+
+	Location CreateForestPath(); //v.02 Location creation for the crossroads.
+
 	Location CreateVillage(); 
 
 	Location CreateWilderness(); 
