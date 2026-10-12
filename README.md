@@ -54,6 +54,11 @@ Struggles/Challenges, the biggest thing was getting the exploration system built
 
 There were several of my classes that required vectors this week, which was something I'd struggled a bit with in the previous months, but I feel like I have a better handle on them now. By far from an expert, but better.
 
+## Milestone 2 Submission
+
+### Documentation
+[Download Milestone 2 Documentation](docs/BradWatson_Milestone2.zip)
+
 For week three I'm prioritizing wrapping up the prototype and moving right into fleshing out the story further and polish.
 ### Week 3
 
