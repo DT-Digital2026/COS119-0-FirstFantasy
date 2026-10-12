@@ -48,8 +48,13 @@ Replace this paragraph with your stand up for this week. Use the prompts above t
 
 ### Week 2
 
-My next stand up will go here...
+This week was very productive. I was able to finish the entirety of the prototype. My entire framework is built for my classes. I was also able to complete my exploration system, and set a bestiary up for each location visited. The combat system, while basic at the moment is also completed. The only things left to do to complete the prototype is build the rest of the story, and tweak the combat system to fit an actual JRPG combat system and not just text based.  Otherwise, I can begin focusing on polishing the game. 
 
+Struggles/Challenges, the biggest thing was getting the exploration system built. It took me a bit of trial and error, as well as research, but I was able to get it up and running. For right now, I have 7 locations the player can travel between and my random enemy encounter system will be finished by end of night tonight, so swapping between the areas will have a % to encounter enemies. 
+
+There were several of my classes that required vectors this week, which was something I'd struggled a bit with in the previous months, but I feel like I have a better handle on them now. By far from an expert, but better.
+
+For week three I'm prioritizing wrapping up the prototype and moving right into fleshing out the story further and polish.
 ### Week 3
 
 Stay tuned, this stand up is coming soon...
