@@ -110,6 +110,43 @@ void Character::SetAse(int Ase) {
 	}
 }
 
+// Adds an ability to the character's collection.
+void Character::AddAbility(const Ability& ability)
+{
+	mAbilities.push_back(ability);
+}
+
+// Returns a read-only reference to the character's abilities.
+const std::vector<Ability>& Character::GetAbilities() const
+{
+	return mAbilities;
+}
+
+// Displays all abilities the character has learned.
+void Character::DisplayAbilities() const
+{
+	std::cout << "\n===== " << mName << "'s Abilities =====\n";
+
+	// Check whether the character has learned any abilities.
+	if (mAbilities.empty())
+	{
+		std::cout << "No abilities learned.\n";
+		return;
+	}
+
+	// Loop through each learned ability.
+	for (size_t i = 0; i < mAbilities.size(); i++)
+	{
+		const Ability& ability = mAbilities[i];
+
+		std::cout << i + 1 << ". "
+			<< ability.GetAbilityName()
+			<< " - Ase Cost: "
+			<< ability.GetAseCost()
+			<< '\n';
+	}
+}
+
 	void Character::DisplayStats() const {
 		std::cout << "Name: " << mName << std::endl;
 		std::cout << "Title: " << mTitle << std::endl;

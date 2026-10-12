@@ -2,7 +2,7 @@
 
 #include "Enemy.h"
 
-class Beastiary {
+class Bestiary {
 public: 
 	Enemy CreateVenomousSnake(); 
 

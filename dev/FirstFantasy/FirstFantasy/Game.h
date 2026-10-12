@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Character.h"
+#include "Bestiary.h"
+#include "CombatSystem.h"
 
 //Creation of the game class. 
 class Game {
@@ -23,4 +25,7 @@ private:
 
 	//Game loop definition.
 	void GameLoop(); 
+
+	//Combat system. 
+	CombatSystem mCombatSystem;
 };
