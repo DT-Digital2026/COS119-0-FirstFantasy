@@ -1,6 +1,9 @@
 #pragma once
 
 #include <string>
+#include <vector>
+
+#include"Ability.h"
 
 class Character {
 public: 
@@ -12,6 +15,16 @@ public:
 
 	//Overloaded constructor used to create a character with starting stats. 
 	Character(const std::string& Name, const std::string& Title, int maxHP, int maxAse, int Attack, int Defense);
+
+	// Adds a new ability to the character.
+	void AddAbility(const Ability& ability);
+
+	// Returns the character's learned abilities.
+	// Const reference prevents unnecessary copying.
+	const std::vector<Ability>& GetAbilities() const;
+
+	// Displays the character's learned abilities.
+	void DisplayAbilities() const;
 
 	//Getters. 
 	std::string GetName() const; 
@@ -27,6 +40,7 @@ public:
 
 	int GetAttack() const; 
 	int GetDefense() const; 
+
 
 	//Setters
 	void SetHP(int HP); 
@@ -51,4 +65,7 @@ private:
 	//Combat Statistics. 
 	int mAttack; 
 	int mDefense; 
+
+	// Stores all abilities learned by the character.
+	std::vector<Ability> mAbilities;
 };

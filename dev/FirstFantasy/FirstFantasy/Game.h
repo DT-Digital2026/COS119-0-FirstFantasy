@@ -1,45 +1,44 @@
+
 #pragma once
 
 #include "Character.h"
 #include "Bestiary.h"
 #include "CombatSystem.h"
-#include "LocationCatalog.h" //v.02 added location catalog header so we can access those methods.
+#include "LocationCatalog.h" // v.02 - Access to the location catalog.
 
-//Creation of the game class. 
-class Game {
-
+// Creation of the game class.
+class Game
+{
 public:
-	//Starts new game, will take no parameters and will return no values.
-	void StartNewGame(); 
+    // Starts a new game.
+    void StartNewGame();
 
-private: 
-	//Bool variable to dictate whether the game is running or not. 
-	bool IsGameRunning; 
+private:
+    // Tracks whether the game is running.
+    bool IsGameRunning;
 
-	//Character Objects for Ora and Mbatha.
-	Character OraKanu; 
+    // Player characters.
+    Character OraKanu;
+    Character Mbatha;
 
-	Character Mbatha; 
+    // v.02 - Location system.
+    LocationCatalog mLocationCatalog;
 
-	//v.02 LocationCatalog declaration that will give access to our locations. 
-	LocationCatalog mLocationCatalog; 
+    // Stores the player's current location ID.
+    int mCurrentLocationId;
 
-	//v.02 mCurrentLocationId will store the players current location, but the default location is set to 1. 
-	int mCurrentLocationId; 
+    // Initializes the game.
+    void InitializeGame();
 
-	//Will initialize the game. Will take no parameters and will return no values. 
-	void InitializeGame(); 
+    // Main gameplay loop.
+    void GameLoop();
 
-	//Game loop definition.
-	void GameLoop(); 
+    // v.02 - Handles player-controlled exploration.
+    void ExploreLocation();
 
-	//v.02 Explore location will handle player controlled exploration.
-	void ExploreLocation(); 
+    // v.02 - Displays connected travel destinations.
+    void DisplayTravelOptions(const Location& currentLocation);
 
-
-	//v.02 DisplayTravelOptions constant method to a location object. Will display connected locations. 
-	void DisplayTravelOptions(const Location& currentLocation); 
-
-	//Combat system. 
-	CombatSystem mCombatSystem;
+    // Combat system.
+    CombatSystem mCombatSystem;
 };

@@ -3,29 +3,26 @@
 #include "Location.h"
 #include "Bestiary.h"
 
-class LocationCatalog {
+class LocationCatalog
+{
 public:
-	//Default constructor. 
-	LocationCatalog(); 
+    // Default constructor.
+    LocationCatalog();
 
-	//Location catalog methods. 
-	Location CreateRoadtoVillage(); 
+    // Location creation methods.
+    Location CreateRoadtoVillage();
+    Location CreateCrossroads();
+    Location CreateRiverPath();
+    Location CreateForestPath();
+    Location CreateVillage();
+    Location CreateWilderness();
+    Location CreateBloodRootHollow();
 
-	Location CreateCrossroads(); //v.02 Location creation for the crossroads.
-
-	Location CreateRiverPath(); //v.02 Location creation for the crossroads.
-
-	Location CreateForestPath(); //v.02 Location creation for the crossroads.
-
-	Location CreateVillage(); 
-
-	Location CreateWilderness(); 
-
-	Location CreateBloodRootHollow(); 
-
-	Location GetLocationByID(int LocationID);//v.02 Got the location ID so that the game will track where the user is, and what options they have
-	//to go to other locations.		
+    // v.02 - Retrieves a location using its ID.
+    // Used for tracking the player's current location
+    // and displaying available travel destinations.
+    Location GetLocationByID(int LocationID);
 
 private:
-	Bestiary mBestiary; 
+    Bestiary mBestiary;
 };

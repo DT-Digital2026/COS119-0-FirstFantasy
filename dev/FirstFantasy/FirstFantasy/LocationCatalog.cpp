@@ -1,184 +1,196 @@
 #include "LocationCatalog.h"
 
-//Default constructor.
-LocationCatalog::LocationCatalog() {
-	//mBestiary uses its default constructor.
+// Default constructor.
+LocationCatalog::LocationCatalog()
+{
+    // mBestiary uses its default constructor.
 }
 
-//Creates the road leading to the village.
-Location LocationCatalog::CreateRoadtoVillage() {
-	Location road(
-		1, //v.02 added location ID.
-		"Road to Village",
-		"A worn road winds through the wilderness toward the village.",
-		20
-	);
+// Creates the road leading to the village.
+Location LocationCatalog::CreateRoadtoVillage()
+{
+    Location road(
+        1,
+        "Road to Village",
+        "A worn road winds through the wilderness toward the village.",
+        20
+    );
 
-	//v.02 Added AddConnection to define which areas this location can access. 
-	road.AddConnection(2); 
+    // Connected locations.
+    road.AddConnection(2);
 
-	//Adds enemies to the road encounter pool.
-	road.AddEnemy(mBestiary.CreateVenomousSnake());
-	road.AddEnemy(mBestiary.CreateBat());
+    // Enemy encounter pool.
+    road.AddEnemy(mBestiary.CreateVenomousSnake());
+    road.AddEnemy(mBestiary.CreateBat());
 
-	return road;
+    return road;
 }
 
-//v.02 Creates the crossroads leading to the village.
-Location LocationCatalog::CreateCrossroads() {
-	Location crossroads(
-		2,//v.02 added location ID.
-		"Crossroads",
-		"The worn roads divide beneath an ancient tree. "
-		"A narrow trail disappears into a dense forest."
-		" while another path follows the sound of flowing water.",
-		0
-	);
+// Creates the crossroads.
+Location LocationCatalog::CreateCrossroads()
+{
+    Location crossroads(
+        2,
+        "Crossroads",
+        "The worn roads divide beneath an ancient tree. "
+        "A narrow trail disappears into a dense forest "
+        "while another path follows the sound of flowing water.",
+        0
+    );
 
-	//v.02 Added AddConnection to define which areas this location can access. 
-	crossroads.AddConnection(1);
-	crossroads.AddConnection(3); 
-	crossroads.AddConnection(4); 
+    // Connected locations.
+    crossroads.AddConnection(1);
+    crossroads.AddConnection(3);
+    crossroads.AddConnection(4);
 
-	crossroads.AddEnemy(mBestiary.CreateVenomousSnake());
-	crossroads.AddEnemy(mBestiary.CreateBat());
-	crossroads.AddEnemy(mBestiary.CreateHyena());
-	crossroads.AddEnemy(mBestiary.CreateLeopard());
+    // Enemy encounter pool.
+    crossroads.AddEnemy(mBestiary.CreateVenomousSnake());
+    crossroads.AddEnemy(mBestiary.CreateBat());
+    crossroads.AddEnemy(mBestiary.CreateHyena());
+    crossroads.AddEnemy(mBestiary.CreateLeopard());
 
-
-	return crossroads;
+    return crossroads;
 }
 
-//v.02 Creates the forest path.
-Location LocationCatalog::CreateForestPath() {
-	Location ForestPath(
-		3,//v.02 added location ID.
-		"Forest Path",
-		"A narrow trail winds between towering trees. "
-		"The undergrowth rustles with unseen movement.",
-		0
-	);
+// Creates the forest path.
+Location LocationCatalog::CreateForestPath()
+{
+    Location ForestPath(
+        3,
+        "Forest Path",
+        "A narrow trail winds between towering trees. "
+        "The undergrowth rustles with unseen movement.",
+        0
+    );
 
-	//v.02 Added AddConnection to define which areas this location can access. 
-	ForestPath.AddConnection(2);
-	ForestPath.AddConnection(5); 
+    // Connected locations.
+    ForestPath.AddConnection(2);
+    ForestPath.AddConnection(5);
 
-	ForestPath.AddEnemy(mBestiary.CreateVenomousSnake());
-	ForestPath.AddEnemy(mBestiary.CreateLeopard());
+    // Enemy encounter pool.
+    ForestPath.AddEnemy(mBestiary.CreateVenomousSnake());
+    ForestPath.AddEnemy(mBestiary.CreateLeopard());
 
-	return ForestPath;
+    return ForestPath;
 }
 
-//v.02 Creates the river path.
-Location LocationCatalog::CreateRiverPath() {
-	Location RiverPath(
-		4,//v.02 added location ID.
-		"River Path",
-		"The road follows a shallow river. "
-		"Water flows and smoothes stones, "
-		"and distant animals call through the trees.",
-		0
-	);
+// Creates the river path.
+Location LocationCatalog::CreateRiverPath()
+{
+    Location RiverPath(
+        4,
+        "River Path",
+        "The road follows a shallow river. "
+        "Water flows and smoothes stones, "
+        "and distant animals call through the trees.",
+        0
+    );
 
-	//v.02 Added AddConnection to define which areas this location can access. 
-	RiverPath.AddConnection(2);
-	RiverPath.AddConnection(5); 
+    // Connected locations.
+    RiverPath.AddConnection(2);
+    RiverPath.AddConnection(5);
 
-	RiverPath.AddEnemy(mBestiary.CreateVenomousSnake());
-	RiverPath.AddEnemy(mBestiary.CreateCrocodile());
-	return RiverPath;
+    // Enemy encounter pool.
+    RiverPath.AddEnemy(mBestiary.CreateVenomousSnake());
+    RiverPath.AddEnemy(mBestiary.CreateCrocodile());
+
+    return RiverPath;
 }
 
-//Creates the village.
-Location LocationCatalog::CreateVillage() {
-	Location village(
-		5,//v.02 added location ID.
-		"Village",
-		"A small settlement near the edge of the wilderness. "
-		"An uneasy silence hangs over the village.",
-		0
-	);
+// Creates the village.
+Location LocationCatalog::CreateVillage()
+{
+    Location village(
+        5,
+        "Village",
+        "A small settlement near the edge of the wilderness. "
+        "An uneasy silence hangs over the village.",
+        0
+    );
 
-	//v.02 Added AddConnection to define which areas this location can access. 
-	village.AddConnection(3); 
-	village.AddConnection(4);
-	village.AddConnection(6); 
+    // Connected locations.
+    village.AddConnection(3);
+    village.AddConnection(4);
+    village.AddConnection(6);
 
-	//The village has no random enemy encounters.
+    // The village has no random enemy encounters.
 
-	return village;
+    return village;
 }
 
-//Creates the wilderness.
-Location LocationCatalog::CreateWilderness() {
-	Location wilderness(
-		6,//v.02 added location ID.
-		"Wilderness",
-		"Dense vegetation and untamed paths surround the village. "
-		"Predators stalk beneath the canopy.",
-		35
-	);
+// Creates the wilderness.
+Location LocationCatalog::CreateWilderness()
+{
+    Location wilderness(
+        6,
+        "Wilderness",
+        "Dense vegetation and untamed paths surround the village. "
+        "Predators stalk beneath the canopy.",
+        35
+    );
 
-	//v.02 Added AddConnection to define which areas this location can access. 
-	wilderness.AddConnection(5); 
-	wilderness.AddConnection(7); 
+    // Connected locations.
+    wilderness.AddConnection(5);
+    wilderness.AddConnection(7);
 
-	//Adds enemies to the wilderness encounter pool.
-	wilderness.AddEnemy(mBestiary.CreateVenomousSnake());
-	wilderness.AddEnemy(mBestiary.CreateBat());
-	wilderness.AddEnemy(mBestiary.CreateHyena());
-	wilderness.AddEnemy(mBestiary.CreateLeopard());
+    // Enemy encounter pool.
+    wilderness.AddEnemy(mBestiary.CreateVenomousSnake());
+    wilderness.AddEnemy(mBestiary.CreateBat());
+    wilderness.AddEnemy(mBestiary.CreateHyena());
+    wilderness.AddEnemy(mBestiary.CreateLeopard());
 
-	return wilderness;
+    return wilderness;
 }
 
-//Creates Bloodroot Hollow.
-Location LocationCatalog::CreateBloodRootHollow() {
-	Location bloodrootHollow(
-		7,//v.02 added location ID.
-		"Bloodroot Hollow",
-		"The air grows cold beneath twisted roots and dark stone. "
-		"Something unnatural has taken hold here.",
-		50
-	);
+// Creates Bloodroot Hollow.
+Location LocationCatalog::CreateBloodRootHollow()
+{
+    Location bloodrootHollow(
+        7,
+        "Bloodroot Hollow",
+        "The air grows cold beneath twisted roots and dark stone. "
+        "Something unnatural has taken hold here.",
+        50
+    );
 
-	//v.02 Added AddConnection to define which areas this location can access. 
-	bloodrootHollow.AddConnection(6); 
+    // Connected locations.
+    bloodrootHollow.AddConnection(6);
 
-	//Adds enemies to the Bloodroot Hollow encounter pool.
-	bloodrootHollow.AddEnemy(mBestiary.CreateVampireBat());
-	bloodrootHollow.AddEnemy(mBestiary.CreateBatSwarm());
-	bloodrootHollow.AddEnemy(mBestiary.CreateBonsamThrall());
+    // Enemy encounter pool.
+    bloodrootHollow.AddEnemy(mBestiary.CreateVampireBat());
+    bloodrootHollow.AddEnemy(mBestiary.CreateBatSwarm());
+    bloodrootHollow.AddEnemy(mBestiary.CreateBonsamThrall());
 
-	return bloodrootHollow;
+    return bloodrootHollow;
 }
 
-//v.02 Retrives a location based on its unique ID, added for exploration system.
-Location LocationCatalog::GetLocationByID(int LocationID) {
+// v.02 - Retrieves a location by its unique ID.
+Location LocationCatalog::GetLocationByID(int LocationID)
+{
+    switch (LocationID)
+    {
+    case 1:
+        return CreateRoadtoVillage();
 
-	switch (LocationID) {
-	case 1:
-		return CreateRoadtoVillage(); 
+    case 2:
+        return CreateCrossroads();
 
-	case 2: 
-		return CreateCrossroads(); 
+    case 3:
+        return CreateForestPath();
 
-	case 3: 
-		return CreateForestPath(); 
+    case 4:
+        return CreateRiverPath();
 
-	case 4:
-		return CreateRiverPath(); 
+    case 5:
+        return CreateVillage();
 
-	case 5: 
-		return CreateVillage(); 
+    case 6:
+        return CreateWilderness();
 
-	case 6:
-		return CreateWilderness(); 
+    case 7:
+        return CreateBloodRootHollow();
 
-	case 7:
-		return CreateBloodRootHollow(); 
-
-	default: 
-		return Location(); 
-	}
-	}
+    default:
+        return Location();
+    }
+}

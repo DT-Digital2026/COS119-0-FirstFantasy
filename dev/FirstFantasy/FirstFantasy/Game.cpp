@@ -114,19 +114,24 @@ void Game::GameLoop()
             CombatResult Result = mCombatSystem.StartCombat(OraKanu, Mbatha, snake); 
 
 
+
             //=========================================
             // Handle Combat Result
             //=========================================
 
-            if (Result == CombatResult::Victory)
-            {
-                std::cout << "\nThe snake collapses to the ground.\n";
-                std::cout << "Ora'Kanu and M'Batha continue their journey.\n";
+if (Result == CombatResult::Victory)
+{
+    std::cout << "\nThe snake collapses to the ground.\n";
+    std::cout << "Ora'Kanu and M'Batha continue their journey.\n";
 
-                //std::cout << "\nAfter some time, the village comes into view.\n"; v.02commented out but keeping for later user.
-                //std::cout << "They have finally arrived.\n";
+//Clear the leftover newline from the game menu.
+std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-                ExploreLocation(); //v.02 This begins player controlled navigation at the road to the village. 
+
+    // v.02 - Begin player-controlled navigation
+    // starting at the road to the village.
+    ExploreLocation();
+
             }
             else if (Result == CombatResult::Defeat)
             {
@@ -134,8 +139,7 @@ void Game::GameLoop()
                 std::cout << "Their journey ends before it can truly begin.\n";
             }
 
-            // Temporary: end gameplay after this encounter.
-            // Later, victory will transition into village exploration.
+            // End the current gamplay session after combat and player controlled exploration.
             IsGameRunning = false;
         }
 
