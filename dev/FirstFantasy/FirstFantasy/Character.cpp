@@ -79,6 +79,10 @@ int Character::GetDefense() const{
 	return mDefense; 
 }
 
+AbilityStatus Character::GetStatus() const {
+	return mStatus;
+}
+
 //Character setters. 
 void Character::SetHP(int HP)
 {
@@ -108,6 +112,10 @@ void Character::SetAse(int Ase) {
 	{
 		mAse = Ase;
 	}
+}
+
+void Character::SetStatus(AbilityStatus Status) {
+	mStatus = Status; 
 }
 
 // Adds an ability to the character's collection.

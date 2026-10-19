@@ -33,6 +33,9 @@ public:
 
 	int GetEnemyCount() const; 
 
+	//v.03 Vector to return enemies avialable at a given location. 
+	const std::vector<Enemy>& GetEnemies() const; 
+
 	//Location Display. 
 	void DisplayLocation() const; 
 

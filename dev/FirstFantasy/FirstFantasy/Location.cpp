@@ -58,6 +58,11 @@ int Location::GetEnemyCount() const {
 	return static_cast<int>(mEnemies.size());
 }
 
+//v.03 Returns location encounter pool. 
+const std::vector<Enemy>& Location::GetEnemies() const {
+	return mEnemies; 
+}
+
 //Displays the location information.
 void Location::DisplayLocation() const {
 	std::cout << "\n=-=-= " << mName << " =-=-=\n";

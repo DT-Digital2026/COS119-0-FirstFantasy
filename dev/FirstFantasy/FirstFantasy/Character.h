@@ -41,10 +41,12 @@ public:
 	int GetAttack() const; 
 	int GetDefense() const; 
 
+	AbilityStatus GetStatus() const; 
 
 	//Setters
 	void SetHP(int HP); 
 	void SetAse(int Ase); 
+	void SetStatus(AbilityStatus Status); 
 
 private: 
 	//Character Infromation.
@@ -68,4 +70,7 @@ private:
 
 	// Stores all abilities learned by the character.
 	std::vector<Ability> mAbilities;
+
+	//Setting up so that enemy abilities can afflict players with status effects. 
+	AbilityStatus mStatus = AbilityStatus::None; 
 };

@@ -1,31 +1,77 @@
+
 #pragma once
 
 #include "Character.h"
 #include "Bestiary.h"
 #include "CombatSystem.h"
+#include "LocationCatalog.h" // v.02 - Access to the location catalog.
+#include "Inventory.h" //v.03 Adding inventory system to the game. 
 
-//Creation of the game class. 
-class Game {
-
+// Creation of the game class.
+class Game
+{
 public:
-	//Starts new game, will take no parameters and will return no values.
-	void StartNewGame(); 
+    // Starts a new game.
+    void StartNewGame();
 
-private: 
-	//Bool variable to dictate whether the game is running or not. 
-	bool IsGameRunning; 
+private:
+    // Tracks whether the game is running.
+    bool IsGameRunning;
 
-	//Character Objects for Ora and Mbatha.
-	Character OraKanu; 
+    // Player characters.
+    Character OraKanu;
+    Character Mbatha;
 
-	Character Mbatha; 
+    // v.02 - Location system.
+    LocationCatalog mLocationCatalog;
 
-	//Will initialize the game. Will take no parameters and will return no values. 
-	void InitializeGame(); 
+    // Stores the player's current location ID.
+    int mCurrentLocationId;
 
-	//Game loop definition.
-	void GameLoop(); 
+    //v.03 Track  progress through the opening road sequence. 
+    int mRoadProgress = 0; 
 
-	//Combat system. 
-	CombatSystem mCombatSystem;
+    //v.03 Variable and method to determine if the player has entered the shaman's hut and met the shaman for the first time. 
+    bool mHasMetShaman = false; 
+
+    void MeetShaman(); 
+
+    //v.03 Variable and method to determine if the player has spoken to the shaman and then moved on to the cheif.
+    bool mHasMetChief = false; 
+
+    void MeetChief(); 
+
+    // Initializes the game.
+    void InitializeGame();
+
+    ////v.03 Method to display the opening scene. 
+    void DisplayOpeningScene(); 
+
+    // Main gameplay loop.
+    void GameLoop();
+
+    //v.02 Handles player-controlled exploration.
+    void ExploreLocation();
+
+    //v.03 Advances the opening journey along the road. 
+    void AdvanceRoadJourney(); 
+
+    //v.02 Displays connected travel destinations.
+    void DisplayTravelOptions(const Location& currentLocation);
+
+    //v.03 Method to check for random enemy encounters. 
+    void CheckRandomEncounter(); 
+
+    //v.03 Shared party Inventory system. 
+    Inventory mInventory; 
+
+    //v.03 Ama's necklace.
+    bool mHasFoundNecklace = false; 
+    bool mHasReturnedNecklace = false; 
+
+    void DiscoverNecklace(); 
+    void ReturnNecklacetoChief(); 
+
+    // Combat system.
+    CombatSystem mCombatSystem;
 };

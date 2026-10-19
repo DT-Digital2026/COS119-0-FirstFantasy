@@ -13,6 +13,10 @@ public:
 	//Add an item to inventory.
 	void AddItem(const Item& Item); 
 
+	//v.03 Retrieves an item without removing it.
+	//Returns a nullptr if the index is invalid.
+	const Item* GetItem(int Index) const; 
+
 	//Remove an item from inventory. 
 	bool RemoveItem(int Index); 
 

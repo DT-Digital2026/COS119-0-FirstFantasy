@@ -30,6 +30,15 @@ Enemy::Enemy(std::string Name, int MaxHP, int Attack, int Defense) {
 	mDefense = Defense;
 }
 
+//Implementing vectors for enemy abilities. 
+void Enemy::AddAbility(const Ability& NewAbility) {
+	mAbilities.push_back(NewAbility); 
+}
+
+const std::vector<Ability>& Enemy::GetAbilities() const {
+	return mAbilities; 
+}
+
 //Enemy getters. 
 std::string Enemy::GetName() const {
 	return mName;
@@ -51,6 +60,11 @@ int Enemy::GetDefense() const {
 	return mDefense;
 }
 
+//Current status effect applied to this enemy. 
+AbilityStatus Enemy::GetStatus() const {
+	return mStatus;
+}
+
 //Enemy setters. 
 void Enemy::SetHP(int HP)
 {
@@ -66,6 +80,11 @@ void Enemy::SetHP(int HP)
 	{
 		mHP = HP;
 	}
+}
+
+//Applies a status effect to the enemy. 
+void Enemy::SetStatus(AbilityStatus Status) {
+	mStatus = Status; 
 }
 
 void Enemy::DisplayStats() const {
