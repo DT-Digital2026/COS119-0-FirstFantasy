@@ -13,7 +13,6 @@ Inventory::Inventory() {
 //====================
 //Add Item
 //====================
-
 void Inventory::AddItem(const Item& item) {
 	mItems.push_back(item); 
 }
@@ -21,7 +20,6 @@ void Inventory::AddItem(const Item& item) {
 //====================
 //Remove Item
 //====================
-
 bool Inventory::RemoveItem(int index) {
 	//Checks for an invalid index. 
 	if (index < 0 || index >= static_cast<int>(mItems.size())) {
@@ -36,7 +34,6 @@ bool Inventory::RemoveItem(int index) {
 //====================
 //Display Inventory
 //====================
-
 void Inventory::DisplayInventory() const {
 	std::cout << "\n=-=-= Inventory =-=-=\n"; 
 
@@ -57,4 +54,15 @@ void Inventory::DisplayInventory() const {
 //====================
 int Inventory::GetItemCount() const {
 	return static_cast<int>(mItems.size());
+}
+
+//========================
+//v.03 Get Item
+//========================
+const Item* Inventory::GetItem(int Index) const {
+	//Validate the requested index. 
+	if (Index < 0 || Index >= static_cast<int>(mItems.size())) {
+		return nullptr; 
+	}
+	return &mItems[Index];
 }
