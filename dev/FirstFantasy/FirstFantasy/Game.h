@@ -77,10 +77,23 @@ private:
     void ExploreWitheredGrove(); 
     void ExploreBoneStrewnPath(); 
     void ExploreDesecratedShrine(); 
-    void ExploreHeartoftheHollow();     
+    void ExploreHeartoftheHollow();    
+    void StartBonsamElderFight(); 
 
     //v.04 Story variables for Bloodroot Hollow. 
     bool mHasEnteredBloodrootHollow = false; 
+    bool mHasExploredWitheredGrove = false; 
+    bool mHasExploredBoneStrewnPath = false; 
+    bool mHasExploredDesecratedShrine = false; 
+    bool mHasExploredHeartoftheHollow = false; 
+    bool mHasDefeatedBonsamElder = false; 
+
+    //v.04 Game Ending. 
+    bool mHasHeardChiefsConfession = false; 
+    bool mHasHeardShamansWarning = false; 
+
+    void ChiefsConfession(); 
+    void ShamansWarning(); 
 
     // Combat system.
     CombatSystem mCombatSystem;
