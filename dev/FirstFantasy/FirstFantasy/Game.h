@@ -72,6 +72,16 @@ private:
     void DiscoverNecklace(); 
     void ReturnNecklacetoChief(); 
 
+    //v.04 Methods for exploring the endgame dungeon, Bloodroot Hollow.
+    void EnterBloodrootHollow(); 
+    void ExploreWitheredGrove(); 
+    void ExploreBoneStrewnPath(); 
+    void ExploreDesecratedShrine(); 
+    void ExploreHeartoftheHollow();     
+
+    //v.04 Story variables for Bloodroot Hollow. 
+    bool mHasEnteredBloodrootHollow = false; 
+
     // Combat system.
     CombatSystem mCombatSystem;
 };

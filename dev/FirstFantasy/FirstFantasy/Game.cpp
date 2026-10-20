@@ -6,6 +6,7 @@
 
 #include "Game.h"
 #include "AbilityCatalog.h"
+#include "ItemCatalog.h"
 
 //Starts a new game.
 void Game::StartNewGame()
@@ -122,6 +123,8 @@ void Game::InitializeGame()
     mHasFoundNecklace = false;  
     //v.03 Sets necklace return to false.
     mHasReturnedNecklace = false; 
+    //v.04 Resetting the flag for Bloodroot Hollow. 
+    mHasEnteredBloodrootHollow = false; 
 }
 
 //============================================================
@@ -186,6 +189,9 @@ void Game::MeetShaman() {
 //============================================================
 void Game::MeetChief() {
     if (mHasMetChief) {
+        if (mHasFoundNecklace && !mHasReturnedNecklace) {
+            ReturnNecklacetoChief(); 
+        }
         return; 
     }
     std::cout << "\n=====================================================================\n";
@@ -304,7 +310,53 @@ void Game::ReturnNecklacetoChief() {
 
     std::cout << "\nChief: \"Her mother gave it to her. She never took it off.\"\n"; 
 
+    std::cout << "\nThe chief lowers his head in silence.\n"; 
 
+    std::cout << "\nChief: \"There is a place beyond the river.\n"; 
+    std::cout << "Our people have avoided it for generations.\n"; 
+    std::cout << "We call it Bloodroot Hollow. It is dangerous, filled with\n";
+    std::cout << "darkness. Creatures that live on blood...the Bonsam.\"\n"; 
+
+    std::cout << "\nOra'Kanu: \"Leave it to us, we will investigate this Bloodroot Hollow.\"\n"; 
+
+    std::cout << "\n[QUEST UPDATED: Investigate Bloodroot Hollow.]\n";
+
+    //v.04 Locate Ama's necklace in the party inventory. 
+    int necklaceIndex = mInventory.FindItemByName("Ama's Necklace"); 
+
+    if (necklaceIndex == -1) {
+        std::cout << "\nAma's Necklace is missing from the inventory.\n"; 
+        return; 
+    }
+
+    //v.04 Remove the necklace after returning it to the chief.
+    mInventory.RemoveItem(necklaceIndex); 
+
+    std::cout << "\n[QUEST ITEM REMOVED: Ama's Necklace]\n"; 
+
+    //v.04 Create the quest rewards. 
+    ItemCatalog itemCatalog; 
+
+    Item shamanBracers = itemCatalog.CreateShamanBracers(); 
+    Item reinforcedWraps = itemCatalog.CreateReinforcedWraps(); 
+
+    //v.04 Add both to the parties inventory. 
+    mInventory.AddItem(shamanBracers); 
+    mInventory.AddItem(reinforcedWraps); 
+
+    std::cout << "\nThe chief opens a wooden chest beside his table.\n"; 
+    std::cout << "Chief: \"These belonged to warriors who once protected our village.\n"; 
+    std::cout << "Take them. You may need their strength in the days ahead.\"\n"; 
+
+    std::cout << "\n[QUEST REWARD: Shaman Bracers]\n";
+    std::cout << "[QUEST REWARD: Reinforced Wraps]\n";
+
+    //v.04 Prevents the conversation from repeating. 
+    mHasReturnedNecklace = true; 
+
+    std::cout << "\nPress ENTER to continue...";
+    std::string pause;
+    std::getline(std::cin, pause);
 }
 
 
@@ -377,6 +429,80 @@ void Game::GameLoop()
         }
     }
 }
+
+//================================================================================
+//v.04             Story Element - Enter Bloodroot Hollow           
+//================================================================================
+void Game::EnterBloodrootHollow() {
+    //Prevent the scene from repeating. 
+    if (mHasEnteredBloodrootHollow) {
+        return; 
+    }
+    std::cout << "\n============================================================\n";
+    std::cout << "                  BLOODROOT HOLLOW\n";
+    std::cout << "============================================================\n";
+
+    std::cout << "\nThe forest grows unnaturally quiet as the heroes\n";
+    std::cout << "leave the familiar wilderness behind.\n";
+
+    std::cout << "\nThe trees stand close together, their branches\n";
+    std::cout << "intertwining overhead and swallowing the afternoon light.\n";
+
+    std::cout << "\nThick roots, stained a deep crimson, twist across\n";
+    std::cout << "the ground like veins beneath the forest floor.\n";
+
+    std::cout << "\nM'Batha: \"Something is wrong with this place.\"\n";
+
+    std::cout << "\nOra'Kanu: \"The forest is old. Older than the village.\"\n";
+
+    std::cout << "\nA faint rattling sound draws their attention.\n";
+
+    std::cout << "\nSmall wooden charms hang from the surrounding trees,\n";
+    std::cout << "swaying gently despite the absence of wind.\n";
+
+    std::cout << "\nM'Batha approaches one of the trees.\n";
+
+    std::cout << "\nM'Batha: \"These markings... I've seen some of them before.\"\n";
+
+    std::cout << "\nOra'Kanu: \"Where?\"\n";
+
+    std::cout << "\nM'Batha: \"Protective symbols. Used to mark sacred ground.\n";
+    std::cout << "But these others... I don't recognize them.\"\n";
+
+    std::cout << "\nBeyond the hanging charms, a weathered warning\n";
+    std::cout << "has been carved deep into the bark of an ancient tree.\n";
+
+    std::cout << "\nThe words have nearly disappeared beneath the moss.\n";
+
+    std::cout << "\nOra'Kanu brushes the moss away.\n";
+
+    std::cout << "\nOra'Kanu: \"A boundary.\"\n";
+
+    std::cout << "\nM'Batha: \"A warning?\"\n";
+
+    std::cout << "\nOra'Kanu: \"Perhaps. But warnings are meant to keep\n";
+    std::cout << "something on one side of a line.\"\n";
+
+    std::cout << "\nHe looks toward the darkness beyond the trees.\n";
+
+    std::cout << "\nOra'Kanu: \"The question is which side they feared.\"\n";
+
+    std::cout << "\nFor a moment, neither warrior speaks.\n";
+
+    std::cout << "\nThen, somewhere deeper in the hollow,\n";
+    std::cout << "something answers with a low, distant cry.\n";
+
+    std::cout << "\n[LORE DISCOVERED: The Boundary of Bloodroot Hollow]\n";
+
+    // Record that the scene has played.
+    mHasEnteredBloodrootHollow = true;
+
+    std::cout << "\nPress ENTER to continue...";
+    std::string pause;
+    std::getline(std::cin, pause);
+}
+
+
 //=========================================
 //    v.02 DisplayTravelOptions
 //=========================================
@@ -518,6 +644,11 @@ void Game::ExploreLocation()
             //v.03 Discover the necklace after accepting the chief's request. 
             if (mCurrentLocationId == 15 && mHasMetChief && !mHasFoundNecklace) {
                 DiscoverNecklace(); 
+            }
+
+            //v.04 Trigger Bloodroot Hollow's introduction.
+            if (mCurrentLocationId == 7 && !mHasEnteredBloodrootHollow) {
+                EnterBloodrootHollow();
             }
 
             //Checks for random encounters.

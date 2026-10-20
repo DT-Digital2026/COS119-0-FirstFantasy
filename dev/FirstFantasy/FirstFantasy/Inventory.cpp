@@ -66,3 +66,15 @@ const Item* Inventory::GetItem(int Index) const {
 	}
 	return &mItems[Index];
 }
+
+//=========================
+//v.04 GetItemByName
+//=========================
+int Inventory::FindItemByName(const std::string& name) const {
+	for (int i = 0; i < static_cast<int>(mItems.size()); i++) {
+		if (mItems[i].GetName() == name) {
+			return i; 
+		}
+	}
+	return -1; 
+}
