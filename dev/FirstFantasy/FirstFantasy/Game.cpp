@@ -3,10 +3,12 @@
 #include <string>
 #include <stdexcept>
 #include <random>
+#include <algorithm>
 
 #include "Game.h"
 #include "AbilityCatalog.h"
 #include "ItemCatalog.h"
+#include "ItemManager.h"
 
 //Starts a new game.
 void Game::StartNewGame()
@@ -1290,7 +1292,7 @@ void Game::StartBonsamElderFight()
     std::cout << "============================================================\n";
 
     // Start the scripted boss encounter.
-    CombatResult result = mCombatSystem.StartCombat(OraKanu, Mbatha, elder);
+    CombatResult result = mCombatSystem.StartCombat(OraKanu, Mbatha, elder, mInventory);
 
     if (result == CombatResult::Victory) {
         mHasDefeatedBonsamElder = true;
@@ -1460,15 +1462,50 @@ void Game::ExploreLocation() {
 
         //v.03 View the party inventory. 
         if (choice == 9) {
-            mInventory.DisplayInventory(); 
+            mInventory.DisplayInventory();
 
-            std::cout << "\nPress ENTER to return to exploration..."; 
-            std::string pause; 
-            std::getline(std::cin, pause); 
+            std::cout << "\n1. Use Item\n";
+            std::cout << "0. Return\n";
+            std::cout << "\nSelection: ";
 
-            continue; 
-        }
+            std::string inventoryInput;
+            int inventoryChoice = -1;
 
+            std::getline(std::cin, inventoryInput);
+
+            try {
+                size_t position = 0;
+                inventoryChoice = std::stoi(inventoryInput, &position);
+
+                //Rejects inputs like 1abd and 1.5
+                if (position != inventoryInput.length()) {
+                    std::cout << "\nInvalid Selection.\n";
+                    continue;
+                }
+            }
+            catch (const std::invalid_argument&) {
+                std::cout << "\nInvalid Selection.\n";
+                continue;
+            }
+            catch (const std::out_of_range&) {
+                std::cout << "\nSelection out of range.\n";
+                continue;
+            }
+
+            if (inventoryChoice == 1) {
+                ItemManager::UseItemOutsideofCombat(mInventory, OraKanu, Mbatha);
+            }
+            else if (inventoryChoice != 0) {
+                std::cout << "\nInvalid selection.\n";
+            }
+
+        // Return to exploration after viewing inventory.
+        std::cout << "\nPress ENTER to return to exploration...";
+        std::string pause;
+        std::getline(std::cin, pause);
+
+        continue;
+    }
         //Exit exploration.
       // Exit exploration and return to the main menu.
         if (choice == 0) {
@@ -1576,21 +1613,15 @@ void Game::AdvanceRoadJourney() {
 
         std::cout << "\nA Venomous Snake emerges from the bushes!\n";
 
-        CombatResult result = mCombatSystem.StartCombat(
-            OraKanu,
-            Mbatha,
-            snake
-        );
+        CombatResult result = mCombatSystem.StartCombat(OraKanu, Mbatha, snake, mInventory);
 
-        if (result == CombatResult::Victory)
-        {
+        if (result == CombatResult::Victory) {
             std::cout << "\nThe snake collapses to the ground.\n";
             std::cout << "The heroes have survived their first encounter.\n";
 
             mRoadProgress++;
         }
-        else if (result == CombatResult::Defeat)
-        {
+        else if (result == CombatResult::Defeat) {
             std::cout << "\nThe heroes fall along the roadside...\n";
             std::cout << "Their journey ends before it can truly begin.\n";
 
@@ -1660,7 +1691,7 @@ void Game::CheckRandomEncounter() {
     std::cout << "\nAn enemy approaches1\n"; 
 
     //Start combat using the existing combat system. 
-    CombatResult result = mCombatSystem.StartCombat(OraKanu, Mbatha, selectedEnemy); 
+    CombatResult result = mCombatSystem.StartCombat(OraKanu, Mbatha, selectedEnemy, mInventory); 
 
     //Handle defeat. 
     if (result == CombatResult::Defeat) {

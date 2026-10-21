@@ -150,6 +150,7 @@
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemCatalog.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="Location.cpp" />
     <ClCompile Include="LocationCatalog.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemCatalog.h" />
+    <ClInclude Include="ItemManager.h" />
     <ClInclude Include="Location.h" />
     <ClInclude Include="LocationCatalog.h" />
     <ClInclude Include="Menu.h" />

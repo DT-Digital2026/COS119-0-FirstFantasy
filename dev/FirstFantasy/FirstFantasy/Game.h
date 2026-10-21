@@ -65,6 +65,9 @@ private:
     //v.03 Shared party Inventory system. 
     Inventory mInventory; 
 
+    //v.04 Expanding the inventory system to allow for item usage in and out of combat.
+    void UseItemOutsideofCombat(); 
+
     //v.03 Ama's necklace.
     bool mHasFoundNecklace = false; 
     bool mHasReturnedNecklace = false; 

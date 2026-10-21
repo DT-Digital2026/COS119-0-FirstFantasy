@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "CombatSystem.h"
+#include "ItemManager.h"
 
 //Default Constructor. 
 CombatSystem::CombatSystem() {
@@ -41,188 +42,206 @@ int CombatSystem::CalculateDamage(int Attack, int Defense) {
 }
 
 //Player turn
-void CombatSystem::PlayerTurn(Character& Character, Enemy& Enemy)
+void CombatSystem::PlayerTurn(Character& activeCharacter, Enemy& enemy, Inventory& Inventory, Character& OraKanu, Character& Mbatha)
 {
     //Defeated characters cannot attack.
-    if (Character.GetHP() <= 0)
+    if (activeCharacter.GetHP() <= 0)
     {
         return;
     }
 
     std::cout << "\n=================================================================\n";
-    std::cout << Character.GetName() << "'s Turn\n";
+    std::cout << activeCharacter.GetName() << "'s Turn\n";
     std::cout << "=================================================================\n";
 
-    std::cout << "HP: " << Character.GetHP() << "\n";
-    std::cout << "Ase: " << Character.GetAse() << "\n";
+    std::cout << "HP: " << activeCharacter.GetHP() << "\n";
+    std::cout << "Ase: " << activeCharacter.GetAse() << "\n";
 
     //Retrieve the character's learned abilities.
-    const std::vector<Ability>& abilities = Character.GetAbilities();
+    const std::vector<Ability>& abilities = activeCharacter.GetAbilities();
 
-    //Display basic attack.
-    std::cout << "\n1. Attack\n";
+    while (true) {
 
-    //Display learned abilities.
-    for (size_t i = 0; i < abilities.size(); ++i)
-    {
-        std::cout << i + 2 << ". "
-            << abilities[i].GetAbilityName()
-            << " (Ase: " << abilities[i].GetAseCost() << ")\n";
-    }
+        //Display basic attack.
+        std::cout << "\n1. Attack\n";
 
-    std::cout << "Choose an Action: ";
-
-    std::string input;
-    int choice = -1;
-
-    //Validate the player's combat selection.
-    while (true)
-    {
-        if (!std::getline(std::cin, input))
+        //Display learned abilities.
+        for (size_t i = 0; i < abilities.size(); ++i)
         {
-            return;
+            std::cout << i + 2 << ". "
+                << abilities[i].GetAbilityName()
+                << " (Ase: " << abilities[i].GetAseCost() << ")\n";
         }
 
-        try
+        //v.04 Display Item After the learned abilities. 
+        int itemChoice = static_cast<int>(abilities.size()) + 2;
+
+        std::cout << itemChoice << ". Item\n";
+
+        std::cout << "Choose an Action: ";
+
+        std::string input;
+        int choice = -1;
+
+        //Validate the player's combat selection.
+        while (true)
         {
-            size_t position = 0;
-            choice = std::stoi(input, &position);
+            if (!std::getline(std::cin, input)) {
+                return;
+            }
 
-            if (position == input.length() &&
-                choice >= 1 &&
-                choice <= static_cast<int>(abilities.size()) + 1)
-            {
-                //v.03 Check whether the selected ability cost to much Ase. 
-                if (choice > 1) {
-                    const Ability& selectedAbility = abilities[choice - 2]; 
+            try {
+                size_t position = 0;
+                choice = std::stoi(input, &position);
 
-                    if (Character.GetAse() < selectedAbility.GetAseCost()) {
-                        std::cout << "Not enough Ase to use this ability." << selectedAbility.GetAbilityName() << "!\n"; 
-                        std::cout << "Choose another action: "; 
-                        continue; 
+                if (position == input.length() && choice >= 1 && choice <= itemChoice) {
+                    //v.03 Check whether the selected ability cost to much Ase. 
+                    if (choice > 1 && choice < itemChoice) {
+                        const Ability& selectedAbility = abilities[choice - 2];
+
+                        if (activeCharacter.GetAse() < selectedAbility.GetAseCost()) {
+                            std::cout << "Not enough Ase to use this ability." << selectedAbility.GetAbilityName() << "!\n";
+                            std::cout << "Choose another action: ";
+                            continue;
+                        }
                     }
-                }
-                break;
-            }
-        }
-        catch (const std::invalid_argument&)
-        {
-            //Invalid input handled below.
-        }
-        catch (const std::out_of_range&)
-        {
-            //Invalid input handled below.
-        }
-
-        std::cout << "Invalid choice. Please try again: ";
-    }
-
-    //=========================================
-    // Basic Attack
-    //=========================================
-    if (choice == 1)
-    {
-        int Damage = CalculateDamage(
-            Character.GetAttack(),
-            Enemy.GetDefense()
-        );
-
-        Enemy.SetHP(Enemy.GetHP() - Damage);
-
-        std::cout << "\n" << Character.GetName()
-            << " attacks " << Enemy.GetName()
-            << " for " << Damage << " damage!\n";
-
-        std::cout << "HP: " << Enemy.GetHP() << "\n";
-    }
-    //=========================================
-    // Ability Attack
-    //=========================================
-    else
-    {
-        int abilityIndex = choice - 2;
-
-        const Ability& selectedAbility = abilities[abilityIndex];
-
-        //Deduct Ase cost.
-        Character.SetAse(
-            Character.GetAse() - selectedAbility.GetAseCost()
-        );
-
-        std::cout << "\n" << Character.GetName()
-            << " uses " << selectedAbility.GetAbilityName()
-            << "!\n";
-
-        //=========================================
-        // Status Effect Application
-        //=========================================
-        if (selectedAbility.GetStatusEffect() != AbilityStatus::None)
-        {
-            static std::mt19937 generator(std::random_device{}());
-
-            std::uniform_int_distribution<int> statusRoll(1, 100);
-
-            int roll = statusRoll(generator);
-
-            if (roll <= selectedAbility.GetStatusChance())
-            {
-                Enemy.SetStatus(selectedAbility.GetStatusEffect());
-
-                if (Enemy.GetStatus() == AbilityStatus::Wet)
-                {
-                    std::cout << "\n" << Enemy.GetName()
-                        << " is now Wet!\n";
-                }
-                else if (Enemy.GetStatus() == AbilityStatus::Stun) {
-                    std::cout << "\n" << Enemy.GetName() << " has been stunned!\n"; 
-                }
-                else if (Enemy.GetStatus() == AbilityStatus::Poison) {
-                    std::cout << "\n" << Enemy.GetName() << " has been poisoned!\n"; 
-                }
-                else if (Enemy.GetStatus() == AbilityStatus::Bleed) {
-                    std::cout << "\n" << Enemy.GetName() << " is now bleeding!\n";
+                    break;
                 }
             }
+            catch (const std::invalid_argument&) {
+                //Invalid input handled below.
+            }
+            catch (const std::out_of_range&) {
+                //Invalid input handled below.
+            }
+
+            std::cout << "Invalid choice. Please try again: ";
         }
 
         //=========================================
-        // Ability Damage
+        // Basic Attack
         //=========================================
-        int Damage = 0;
-
-        //Zero-power abilities like Raincall deal no direct damage.
-        if (selectedAbility.GetAbilityPower() > 0)
+        if (choice == 1)
         {
-            Damage = CalculateDamage(
-                Character.GetAttack() + selectedAbility.GetAbilityPower(),
-                Enemy.GetDefense()
+            int Damage = CalculateDamage(
+                activeCharacter.GetAttack(),
+                enemy.GetDefense()
             );
 
-            //Apply additional damage against Wet enemies.
-            if (selectedAbility.GetWetDmg() &&
-                Enemy.GetStatus() == AbilityStatus::Wet)
+            enemy.SetHP(enemy.GetHP() - Damage);
+
+            std::cout << "\n" << activeCharacter.GetName()
+                << " attacks " << enemy.GetName()
+                << " for " << Damage << " damage!\n";
+
+            std::cout << "HP: " << enemy.GetHP() << "\n";
+        }
+
+        //=========================================
+        // Item Usage
+        // ========================================
+        else if (choice == itemChoice)
+        {
+            bool itemUsed = ItemManager::UseItemInCombat(Inventory, OraKanu, Mbatha);
+
+            if (itemUsed)
             {
-                //Temporary 50% damage bonus.
-                int wetBonus = Damage / 2;
-
-                Damage += wetBonus;
-
-                std::cout << "\nThe Wet status amplifies the attack!\n";
+                return; // Item used successfully. End turn.
             }
 
-            Enemy.SetHP(Enemy.GetHP() - Damage);
+            // Cancelled or invalid item.
+            // Return to the combat action menu.
+            continue;
         }
 
-        if (Damage > 0)
+        //=========================================
+        // Ability Attack
+        //=========================================
+        else
         {
-            std::cout << Enemy.GetName()
-                << " takes " << Damage << " damage!\n";
+            int abilityIndex = choice - 2;
 
-            std::cout << "HP: " << Enemy.GetHP() << "\n";
+            const Ability& selectedAbility = abilities[abilityIndex];
+
+            //Deduct Ase cost.
+            activeCharacter.SetAse(
+                activeCharacter.GetAse() - selectedAbility.GetAseCost()
+            );
+
+            std::cout << "\n" << activeCharacter.GetName() << " uses " << selectedAbility.GetAbilityName() << "!\n";
+
+            //=========================================
+            // Status Effect Application
+            //=========================================
+            if (selectedAbility.GetStatusEffect() != AbilityStatus::None)
+            {
+                static std::mt19937 generator(std::random_device{}());
+
+                std::uniform_int_distribution<int> statusRoll(1, 100);
+
+                int roll = statusRoll(generator);
+
+                if (roll <= selectedAbility.GetStatusChance())
+                {
+                    enemy.SetStatus(selectedAbility.GetStatusEffect());
+
+                    if (enemy.GetStatus() == AbilityStatus::Wet)
+                    {
+                        std::cout << "\n" << enemy.GetName()
+                            << " is now Wet!\n";
+                    }
+                    else if (enemy.GetStatus() == AbilityStatus::Stun) {
+                        std::cout << "\n" << enemy.GetName() << " has been stunned!\n";
+                    }
+                    else if (enemy.GetStatus() == AbilityStatus::Poison) {
+                        std::cout << "\n" << enemy.GetName() << " has been poisoned!\n";
+                    }
+                    else if (enemy.GetStatus() == AbilityStatus::Bleed) {
+                        std::cout << "\n" << enemy.GetName() << " is now bleeding!\n";
+                    }
+                }
+            }
+
+            //=========================================
+            // Ability Damage
+            //=========================================
+            int Damage = 0;
+
+            //Zero-power abilities like Raincall deal no direct damage.
+            if (selectedAbility.GetAbilityPower() > 0)
+            {
+                Damage = CalculateDamage(
+                    activeCharacter.GetAttack() + selectedAbility.GetAbilityPower(),
+                    enemy.GetDefense()
+                );
+
+                //Apply additional damage against Wet enemies.
+                if (selectedAbility.GetWetDmg() &&
+                    enemy.GetStatus() == AbilityStatus::Wet)
+                {
+                    //Temporary 50% damage bonus.
+                    int wetBonus = Damage / 2;
+
+                    Damage += wetBonus;
+
+                    std::cout << "\nThe Wet status amplifies the attack!\n";
+                }
+
+                enemy.SetHP(enemy.GetHP() - Damage);
+            }
+
+            if (Damage > 0)
+            {
+                std::cout << enemy.GetName()
+                    << " takes " << Damage << " damage!\n";
+
+                std::cout << "HP: " << enemy.GetHP() << "\n";
+            }
+
+            std::cout << activeCharacter.GetName()
+                << " Ase: " << activeCharacter.GetAse() << "\n";
         }
-
-        std::cout << Character.GetName()
-            << " Ase: " << Character.GetAse() << "\n";
+        return;
     }
 }
 //Enemy turn. 
@@ -410,7 +429,7 @@ bool CombatSystem::IsPartyDefeated(
     return OraKanu.GetHP() <= 0 && MBatha.GetHP() <= 0;
 }
 //Start combat. 
-CombatResult CombatSystem::StartCombat(Character& OraKanu, Character& MBatha, Enemy& Enemy) {
+CombatResult CombatSystem::StartCombat(Character& OraKanu, Character& MBatha, Enemy& Enemy, Inventory& Inventory) {
 
     //Reset the status effects at the beginning of combat so statuses do not carry over from one to the next. 
     OraKanu.SetStatus(AbilityStatus::None);
@@ -459,10 +478,10 @@ CombatResult CombatSystem::StartCombat(Character& OraKanu, Character& MBatha, En
 				break;
 			}
 			switch (Turn) {
-			case CombatTurn::OraKanu: PlayerTurn(OraKanu, Enemy); 
+			case CombatTurn::OraKanu: PlayerTurn(OraKanu, Enemy, Inventory, OraKanu, MBatha); 
 				break;
 
-			case CombatTurn::MBatha: PlayerTurn(MBatha, Enemy); 
+			case CombatTurn::MBatha: PlayerTurn(MBatha, Enemy, Inventory, OraKanu, MBatha); 
 				break; 
 
 			case CombatTurn::Enemy: EnemyTurn(Enemy, OraKanu, MBatha);
