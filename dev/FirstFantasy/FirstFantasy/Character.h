@@ -4,6 +4,7 @@
 #include <vector>
 
 #include"Ability.h"
+#include "Item.h"
 
 class Character {
 public: 
@@ -41,6 +42,14 @@ public:
 	int GetAttack() const; 
 	int GetDefense() const; 
 
+	//v.04 Equipment System
+	//Equip a weapon or armor piece. 
+	bool EquipItem(const Item& item); 
+
+	//v.04 Return the currently equipped weapon and armor.
+	const Item* GetEquippedWeapon() const; 
+	const Item* GetEquippedArmor() const; 
+
 	AbilityStatus GetStatus() const; 
 
 	//Setters
@@ -73,4 +82,12 @@ private:
 
 	//Setting up so that enemy abilities can afflict players with status effects. 
 	AbilityStatus mStatus = AbilityStatus::None; 
+
+	//v.04 Equipment slots. 
+	//Each character one weapon and one armor piece. 
+	Item mEquippedWeapon; 
+	Item mEquippedArmor; 
+
+	bool mHasWeapon = false; 
+	bool mHasArmor = false; 
 };

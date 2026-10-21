@@ -98,6 +98,9 @@ void Game::InitializeGame()
     //v.03 Clear inventory when starting a new game.
     mInventory = Inventory(); 
 
+    //v.04 Starting party currency. 
+    mCowries = 100; 
+
     //v.03 Temporary item for testing the inventory system.
    // Temporary item for testing the inventory system.
     Item healingHerb(
@@ -1465,6 +1468,7 @@ void Game::ExploreLocation() {
             mInventory.DisplayInventory();
 
             std::cout << "\n1. Use Item\n";
+            std::cout << "2. Equip Item\n"; //v.04 Add entry for equip item.
             std::cout << "0. Return\n";
             std::cout << "\nSelection: ";
 
@@ -1494,6 +1498,9 @@ void Game::ExploreLocation() {
 
             if (inventoryChoice == 1) {
                 ItemManager::UseItemOutsideofCombat(mInventory, OraKanu, Mbatha);
+            }
+            else if (inventoryChoice == 2) {
+                ItemManager::EquipItemOutsideofCombat(mInventory, OraKanu, Mbatha); //v.04 Added equip item.
             }
             else if (inventoryChoice != 0) {
                 std::cout << "\nInvalid selection.\n";

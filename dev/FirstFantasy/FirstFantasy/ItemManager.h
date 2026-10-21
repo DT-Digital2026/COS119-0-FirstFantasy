@@ -12,4 +12,7 @@ public:
 	//Allows item usage during combat. 
 	//Returns true if an item was succesfully used. 
 	static bool UseItemInCombat(Inventory& inventory, Character& OraKanu, Character& Mbatha);
+
+	//Equip weapons and armor outside of combat. 
+	static void EquipItemOutsideofCombat(Inventory& inventory, Character& OraKanu, Character& Mbatha); 
 }; 

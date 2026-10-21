@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "Character.h"
@@ -64,6 +63,9 @@ private:
 
     //v.03 Shared party Inventory system. 
     Inventory mInventory; 
+
+    //v04 Shared party currency (Cowries).
+    int mCowries = 0; 
 
     //v.04 Expanding the inventory system to allow for item usage in and out of combat.
     void UseItemOutsideofCombat(); 
