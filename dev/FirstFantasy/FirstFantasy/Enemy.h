@@ -11,7 +11,7 @@ public:
 	Enemy(); 
 
 	//Overloaded constructor. 
-	Enemy(std::string Name, int MaxHP, int Attack, int Defense); 
+	Enemy(std::string Name, int MaxHP, int Attack, int Defense, int CowrieReward = 0); 
 
 	//Getters. 
 	std::string GetName() const; 
@@ -24,6 +24,9 @@ public:
 	int GetDefense() const; 
 
 	void SetHP(int EHP); 
+
+	//v.04 Returns the cowrie reward when the enemies are defeated. 
+	int GetCowrieReward() const; 
 
 	//v.03 Returns an enemies current status. 
 	AbilityStatus GetStatus() const; 
@@ -46,6 +49,9 @@ private:
 	//Health.
 	int mHP; 
 	int mMaxHP; 
+
+	//Cowries
+	int mCowrieReward = 0; 
 
 	//Attack/Defense stats. 
 	int mAttack; 

@@ -4,17 +4,36 @@
 #include <stdexcept>
 #include <random>
 #include <algorithm>
+#include <vector>
 
+#include "SaveSystem.h"
 #include "Game.h"
 #include "AbilityCatalog.h"
 #include "ItemCatalog.h"
 #include "ItemManager.h"
 
 //Starts a new game.
-void Game::StartNewGame()
-{
+void Game::StartNewGame() {
     InitializeGame();
     DisplayOpeningScene(); //v.03 Opening scene method.
+    GameLoop();
+}
+//==================================================
+//          v.05 - Continue Saved Game
+//==================================================
+void Game::ContinueSavedGame() {
+
+    //Initialize characters, abilities, and game systems.
+    InitializeGame();
+
+    //Attempt to load saved progress.
+    if (!SaveSystem::LoadGame(*this)) {
+        std::cout << "\nUnable to load saved game.\n";
+        return;
+    }
+
+    //Resume gameplay without replaying the opening scene.
+    IsGameRunning = true;
     GameLoop();
 }
 
@@ -82,9 +101,15 @@ void Game::InitializeGame()
 
     //Assign Ora'Kanu's starting abilities. 
     OraKanu.AddAbility(abilityCatalog.Raincall()); 
+    OraKanu.AddAbility(abilityCatalog.LightningStrike()); 
+    OraKanu.AddAbility(abilityCatalog.HealingRain()); 
+    OraKanu.AddAbility(abilityCatalog.Tempest()); 
     
     //Assign M'Batha's starting abilities. 
     Mbatha.AddAbility(abilityCatalog.Jab());
+    Mbatha.AddAbility(abilityCatalog.SpearStrike()); 
+    Mbatha.AddAbility(abilityCatalog.StunningBlow()); 
+    Mbatha.AddAbility(abilityCatalog.ChampionCombo()); 
 
     //Set player stats.
     OraKanu.DisplayStats(); 
@@ -268,6 +293,7 @@ void Game::MeetChief() {
     //Record that the introduction has occured. 
     mHasMetChief = true;
 }
+
 //============================================================
 //   v.03 Story Element for Ama's Necklace
 //============================================================
@@ -740,7 +766,8 @@ void Game::GameLoop() {
         std::cout << "==============================================================" << std::endl;
 
         std::cout << "1. Continue" << std::endl;
-        std::cout << "2. Return to Main Menu" << std::endl;
+        std::cout << "2. SaveGame" << std::endl;
+        std::cout << "3. Return to Main Menu" << std::endl;
 
         std::cout << "Enter your choice: ";
 
@@ -778,11 +805,15 @@ void Game::GameLoop() {
             }
         }
         else if (choice == 2) {
+            //v.05 Save the current game.
+            SaveSystem::SaveGame(*this);
+        }
+        else if (choice == 3) {
             // Return to the main menu.
             IsGameRunning = false;
         }
         else {
-            std::cout << "Invalid choice. Please enter 1 or 2.\n";
+            std::cout << "Invalid choice. Please enter 1, 2, or 3.\n";
         }
     }
 }
@@ -1299,6 +1330,14 @@ void Game::StartBonsamElderFight()
 
     if (result == CombatResult::Victory) {
         mHasDefeatedBonsamElder = true;
+        //Award Cowries for defeating the Bonsam Elder.
+        mCowries += elder.GetCowrieReward();
+
+        std::cout << "\nYou collected "
+            << elder.GetCowrieReward()
+            << " Cowries!\n";
+
+        std::cout << "Party Cowries: " << mCowries << "\n";
 
         std::cout << "\nThe Bonsam Elder collapses beneath the ancient tree.\n";
         std::cout << "Its enormous claws scrape against the blackened earth.\n";
@@ -1408,6 +1447,7 @@ void Game::DisplayTravelOptions(const Location& currentLocation) {
 
         menuNumber++; 
     }
+ 
     std::cout << "9. View Inventory" << std::endl;
     std::cout << "0. Exit Exploration" << std::endl;
 }
@@ -1433,6 +1473,8 @@ void Game::ExploreLocation() {
         std::string input;
         int choice = -1;
 
+        std::cout << "\n[S] Save Game\n";
+
         std::cout << "\nEnter your choice: ";
 
         //Read the entire line of user input.
@@ -1441,7 +1483,11 @@ void Game::ExploreLocation() {
             IsGameRunning = false;
             break;
         }
-
+        //v.05 Save the game directly from exploration.
+        if (input == "S" || input == "s") {
+            SaveSystem::SaveGame(*this);
+            continue;
+        }
         //Convert input into an integer.
         try {
             size_t position = 0;
@@ -1549,7 +1595,12 @@ void Game::ExploreLocation() {
             //v.03 Trigger the chief's introduction when entering his hut.
             if (mCurrentLocationId == 11) {
                 MeetChief();
+
             }
+            //v.04 Visit Merchant.
+             if (mCurrentLocationId == 10) {
+                 VisitMerchant();
+             }
 
             //v.03 Discover the necklace after accepting the chief's request. 
             if (mCurrentLocationId == 15 && mHasMetChief && !mHasFoundNecklace) {
@@ -1623,6 +1674,12 @@ void Game::AdvanceRoadJourney() {
         CombatResult result = mCombatSystem.StartCombat(OraKanu, Mbatha, snake, mInventory);
 
         if (result == CombatResult::Victory) {
+            //Award Cowries for defeating the snake.
+            mCowries += snake.GetCowrieReward();
+
+            std::cout << "\nYou collected " << snake.GetCowrieReward() << " Cowries!\n";
+            std::cout << "Party Cowries: " << mCowries << "\n";
+
             std::cout << "\nThe snake collapses to the ground.\n";
             std::cout << "The heroes have survived their first encounter.\n";
 
@@ -1700,9 +1757,116 @@ void Game::CheckRandomEncounter() {
     //Start combat using the existing combat system. 
     CombatResult result = mCombatSystem.StartCombat(OraKanu, Mbatha, selectedEnemy, mInventory); 
 
+    //Award Cowries after winning a random encounter.
+    if (result == CombatResult::Victory) {
+        mCowries += selectedEnemy.GetCowrieReward();
+
+        std::cout << "\nYou collected "
+            << selectedEnemy.GetCowrieReward()
+            << " Cowries!\n";
+
+        std::cout << "Party Cowries: " << mCowries << "\n";
+    }
+
     //Handle defeat. 
     if (result == CombatResult::Defeat) {
         std::cout << "\nYour journey has come to an end.\n"; 
         IsGameRunning = false; 
+    }
+}
+//=================================================
+//v.04 Visit the Item Shop
+//=================================================
+void Game::VisitMerchant() {
+    //Create the item catalog and the merchant's inventory. 
+    ItemCatalog catalog; 
+
+    std::vector<Item> ShopItems = {
+        catalog.CreateHealthPotion(),
+        catalog.CreateAsePotion(),
+        catalog.CreateAntiVenom(),
+        catalog.CreateStormWornBracers(),
+        catalog.CreateDhambeWraps(),
+        catalog.CreateHideVest(),
+    }; 
+    //Keep the shop open until the player chooses to leave. 
+    while (true) {
+        std::cout << "\n==========================================\n";
+        std::cout << "\n           Village Item Shop              \n";
+        std::cout << "\n==========================================\n";
+
+        std::cout << "\nMerchant: \"Welcome, travelers! Care to see my wares?\"\n";
+
+        std::cout << "\nParty Cowries: " << mCowries << "\n";
+
+        // Display the merchant's available items.
+        for (int i = 0; i < static_cast<int>(ShopItems.size()); i++) {
+
+            std::cout << i + 1 << ". "
+                << ShopItems[i].GetName()
+                << " - " << ShopItems[i].GetPrice()
+                << " Cowries\n";
+        }
+
+        std::cout << "0. Leave Shop\n";
+        std::cout << "\nEnter your choice: ";
+
+        std::string input;
+
+        if (!std::getline(std::cin, input)) {
+            return;
+        }
+
+        int choice = -1;
+
+        // Validate the player's input.
+        try {
+            size_t position = 0;
+            choice = std::stoi(input, &position);
+
+            if (position != input.length()) {
+                std::cout << "\nInvalid selection.\n";
+                continue;
+            }
+        }
+        catch (const std::invalid_argument&) {
+            std::cout << "\nInvalid selection.\n";
+            continue;
+        }
+        catch (const std::out_of_range&) {
+            std::cout << "\nSelection out of range.\n";
+            continue;
+        }
+
+        // Leave the merchant.
+        if (choice == 0) {
+            std::cout << "\nMerchant: \"Safe travels, friends!\"\n";
+            return;
+        }
+
+        // Check that the selected item exists.
+        if (choice < 1 || choice > static_cast<int>(ShopItems.size())) {
+            std::cout << "\nInvalid item selection.\n";
+            continue;
+        }
+
+        // Retrieve the selected item.
+        Item selectedItem = ShopItems[choice - 1];
+
+        int price = selectedItem.GetPrice();
+
+        // Check whether the party can afford the item.
+        if (mCowries < price) {
+            std::cout << "\nMerchant: \"You haven't enough Cowries for that!\"\n";
+            continue;
+        }
+
+        // Complete the purchase.
+        mCowries -= price;
+        mInventory.AddItem(selectedItem);
+
+        std::cout << "\nPurchased: " << selectedItem.GetName() << "\n";
+        std::cout << "Cowries spent: " << price << "\n";
+        std::cout << "Remaining Cowries: " << mCowries << "\n";
     }
 }

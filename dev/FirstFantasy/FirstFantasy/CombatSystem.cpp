@@ -2,6 +2,7 @@
 #include <random> //Needed for random number generation.
 #include <limits>
 #include <iostream>
+#include <string> 
 
 #include "CombatSystem.h"
 #include "ItemManager.h"
@@ -169,6 +170,34 @@ void CombatSystem::PlayerTurn(Character& activeCharacter, Enemy& enemy, Inventor
             );
 
             std::cout << "\n" << activeCharacter.GetName() << " uses " << selectedAbility.GetAbilityName() << "!\n";
+
+            //============================
+            //v.04 Healing Rain 
+            //============================
+            if (selectedAbility.GetAbilityName() == "Healing Rain") {
+
+                const int HealingAmount = selectedAbility.GetAbilityPower(); 
+
+                //Heal Ora without exceeding maximum HP. 
+                if (OraKanu.GetHP() > 0) {
+                    int missingHP = OraKanu.GetMaxHP() - OraKanu.GetHP(); 
+
+                    int actualHealing = std::min(HealingAmount, missingHP); 
+
+                    std::cout << OraKanu.GetName() << " restores " << actualHealing << " HP!\n"; 
+                }
+                //Heal Mbatha without exceeding maximum HP. 
+                if (Mbatha.GetHP() > 0) {
+                    int missingHP = Mbatha.GetMaxHP() - Mbatha.GetHP();
+
+                    int actualHealing = std::min(HealingAmount, missingHP);
+
+                    std::cout << Mbatha.GetName() << " restores " << actualHealing << " HP!\n";
+                }
+                std::cout << activeCharacter.GetName() << " Ase: " << activeCharacter.GetAse() << "\n"; 
+
+                return; //Healing rain ends the characters turn.
+            }
 
             //=========================================
             // Status Effect Application

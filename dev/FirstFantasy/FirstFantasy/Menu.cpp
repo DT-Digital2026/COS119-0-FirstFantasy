@@ -2,22 +2,63 @@
 #include <limits>
 #include <string>
 #include <stdexcept>
+#define NOMINMAX
+#include <windows.h>
 
 #include "Menu.h"
 
+namespace
+{
+    constexpr WORD FF_GOLD = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+    constexpr WORD FF_GREEN = FOREGROUND_GREEN;
+    constexpr WORD FF_IVORY = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
+    constexpr WORD FF_RED = FOREGROUND_RED | FOREGROUND_INTENSITY;
+
+    void SetTextColor(WORD color)
+    {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+    }
+}
+
 int Menu::DisplayMainMenu()
 {
-    //Game main menu. This is the first pass, will make the menu more detailed once we have the code working. Greybox first. Then polish.
-    std::cout << "====================================================================" << std::endl;
-    std::cout << "                First Fantasy: The Dark Continent                   " << std::endl;
-    std::cout << "====================================================================" << std::endl;
+    //v.05 - Polished main menu presentation.
+    std::cout << "\n";
+    
+    SetTextColor(FF_GREEN); 
+    std::cout << "====================================================\n";
 
-    std::cout << "1. New Game" << std::endl; //Allows new game start. 
-    std::cout << "2. Load Game" << std::endl; //Loads previously saved game. 
-    std::cout << "3. How to Play" << std::endl; //Dictates instructions on how to play. 
-    std::cout << "4. Lore" << std::endl; //Displays character information, location information, and beastiary.
-    std::cout << "5. Credits" << std::endl; //Shows credits.
-    std::cout << "6. Exit" << std::endl; //Exits the game. 
+    SetTextColor(FF_GOLD);
+        std::cout << "                                                    \n";
+    std::cout << "                 F I R S T                          \n";
+    std::cout << "               F A N T A S Y                        \n";
+    std::cout << "                                                    \n";
+    std::cout << "          T H E  D A R K  C O N T I N E N T         \n";
+    std::cout << "                                                    \n";
+
+    SetTextColor(FF_GREEN);
+    std::cout << "====================================================\n";
+
+    SetTextColor(FF_IVORY);
+    std::cout << "                                                    \n";
+    std::cout << "    1.  NEW GAME                                    \n";
+    std::cout << "    2.  LOAD GAME                                   \n";
+    std::cout << "    3.  HOW TO PLAY                                 \n";
+    std::cout << "    4.  LORE                                        \n";
+    std::cout << "    5.  CREDITS                                     \n";
+    std::cout << "    6.  EXIT                                        \n";
+    std::cout << "                                                    \n";
+
+    SetTextColor(FF_GREEN);
+    std::cout << "====================================================\n";
+
+    SetTextColor(FF_GOLD);
+    std::cout << "             A JOURNEY INTO AKANTHA                 \n";
+
+    SetTextColor(FF_GREEN);
+    std::cout << "====================================================\n\n";
+    SetTextColor(FF_IVORY);
+
 
     int choice = GetValidMenuChoice(1, 6);
 

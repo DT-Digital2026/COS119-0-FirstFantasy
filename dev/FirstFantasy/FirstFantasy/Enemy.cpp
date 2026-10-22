@@ -17,7 +17,7 @@ Enemy::Enemy() {
 	mDefense = 0; 
 }
 //Building overloaded constructor. 
-Enemy::Enemy(std::string Name, int MaxHP, int Attack, int Defense) {
+Enemy::Enemy(std::string Name, int MaxHP, int Attack, int Defense, int CowrieReward) {
 	//Enemy Information. 
 	mName = Name;
 
@@ -28,6 +28,9 @@ Enemy::Enemy(std::string Name, int MaxHP, int Attack, int Defense) {
 	//Attack/Defense.
 	mAttack = Attack;
 	mDefense = Defense;
+
+	//v.04 Cowrie Reward. 
+	mCowrieReward = CowrieReward; 
 }
 
 //Implementing vectors for enemy abilities. 
@@ -58,6 +61,11 @@ int Enemy::GetAttack() const {
 
 int Enemy::GetDefense() const {
 	return mDefense;
+}
+
+//v.04 Returns cowries awarded when the enemy is defeated. 
+int Enemy::GetCowrieReward() const {
+	return mCowrieReward; 
 }
 
 //Current status effect applied to this enemy. 
