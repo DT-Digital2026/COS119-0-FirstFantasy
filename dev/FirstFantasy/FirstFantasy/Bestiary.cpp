@@ -4,7 +4,7 @@
 //Create venomous snake. 
 Enemy Bestiary::CreateVenomousSnake() {
 	//Create the enemy with existing stats. 
-	Enemy Snake("Venomous Snake", 35, 8, 3); 
+	Enemy Snake("Venomous Snake", 65, 8, 3, 18); 
 
 	//Access ability catalog. 
 	AbilityCatalog abilityCatalog; 
@@ -20,7 +20,7 @@ Enemy Bestiary::CreateVenomousSnake() {
 
 //Create bat. 
 Enemy Bestiary::CreateBat() {
-	Enemy Bat("Bat", 25, 7, 2);
+	Enemy Bat("Bat", 50, 7, 2, 15);
 
 	//Access ability catalog. 
 	AbilityCatalog abilityCatalog;
@@ -35,7 +35,7 @@ Enemy Bestiary::CreateBat() {
 
 //Create Hyena. 
 Enemy Bestiary::CreateHyena() {
-	Enemy Hyena("Hyena", 50, 11, 5);
+	Enemy Hyena("Hyena", 75, 11, 5, 17);
 
 	//Access ability catalog. 
 	AbilityCatalog abilityCatalog;
@@ -50,7 +50,7 @@ Enemy Bestiary::CreateHyena() {
 
 //Create Leopard. 
 Enemy Bestiary::CreateLeopard() {
-	Enemy Leopard("Leopard", 70, 15, 7);
+	Enemy Leopard("Leopard", 70, 15, 7, 20);
 
 	//Access ability catalog. 
 	AbilityCatalog abilityCatalog;
@@ -65,7 +65,7 @@ Enemy Bestiary::CreateLeopard() {
 
 //Create crocodile. 
 Enemy Bestiary::CreateCrocodile() {
-	Enemy Crocodile("Crocodile", 90, 14, 12);
+	Enemy Crocodile("Crocodile", 90, 14, 12, 20);
 
 	//Access ability catalog. 
 	AbilityCatalog abilityCatalog;
@@ -80,7 +80,7 @@ Enemy Bestiary::CreateCrocodile() {
 
 //Create vampire bat. 
 Enemy Bestiary::CreateVampireBat() {
-	Enemy vBat("Vampire Bat", 55, 13, 6);
+	Enemy vBat("Vampire Bat", 55, 13, 6, 17);
 
 	//Access ability catalog. 
 	AbilityCatalog abilityCatalog;
@@ -95,7 +95,7 @@ Enemy Bestiary::CreateVampireBat() {
 
 //Create bat swarm. 
 Enemy Bestiary::CreateBatSwarm() {
-	Enemy BatSwarm("Bat Swarm", 80, 12, 4);
+	Enemy BatSwarm("Bat Swarm", 80, 12, 4, 18);
 
 	//Access ability catalog. 
 	AbilityCatalog abilityCatalog;
@@ -110,7 +110,7 @@ Enemy Bestiary::CreateBatSwarm() {
 
 //Create bonsam thrall. 
 Enemy Bestiary::CreateBonsamThrall() {
-	Enemy BonsamThrall("Bonsam Thrall", 100, 16, 10);
+	Enemy BonsamThrall("Bonsam Thrall", 100, 16, 10, 20);
 
 	//Access ability catalog. 
 	AbilityCatalog abilityCatalog;
@@ -125,7 +125,7 @@ Enemy Bestiary::CreateBonsamThrall() {
 
 //Create bonsam. 
 Enemy Bestiary::CreateBonsam() {
-	Enemy Bonsam("Bonsam", 140, 19, 12);
+	Enemy Bonsam("Bonsam", 140, 19, 12, 25);
 
 	//Access ability catalog. 
 	AbilityCatalog abilityCatalog;
@@ -140,7 +140,7 @@ Enemy Bestiary::CreateBonsam() {
 
 //Create elder bonsam. 
 Enemy Bestiary::CreateBonsamElder() {
-	Enemy ElderBonsam("Bonsam Elder", 250, 22, 15);
+	Enemy ElderBonsam("Bonsam Elder", 200, 22, 15, 50);
 
 	//Access ability catalog. 
 	AbilityCatalog abilityCatalog;

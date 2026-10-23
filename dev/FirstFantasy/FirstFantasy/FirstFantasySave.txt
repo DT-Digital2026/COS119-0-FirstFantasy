@@ -1,0 +1,33 @@
+First_Fantasy_Save_V1
+118
+10
+4
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+100
+92
+118
+46
+1
+Healing Herb
+A medicinal herb that restores 25 HP.
+0
+25
+0
+0
+0
+0
+0
+0
+0
+0

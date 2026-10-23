@@ -15,7 +15,7 @@ public:
 	Item();
 
 	//Overloaded constructor. 
-	Item(const std::string& Name, const std::string& Description, ItemType Type, int HPRestore, int AseRestore, int ATKBonus, int DefBonus);
+	Item(const std::string& Name, const std::string& Description, ItemType Type, int HPRestore, int AseRestore, int ATKBonus, int DefBonus, int Price = 0);
 
 	//Getters. 
 	std::string GetName() const;
@@ -32,6 +32,9 @@ public:
 
 	int GetDefBonus() const;
 
+	//v.04 Returns the items purchase price. 
+	int GetPrice() const; 
+
 private:
 	std::string mName;
 
@@ -46,4 +49,6 @@ private:
 	int mAtkBonus;
 
 	int mDefBonus;
+
+	int mPrice; 
 };

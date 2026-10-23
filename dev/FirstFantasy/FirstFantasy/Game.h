@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "Character.h"
@@ -11,8 +10,14 @@
 class Game
 {
 public:
+    //v.04 Allows savesystem to access game data for saving and loading. 
+    friend class SaveSystem; 
+
     // Starts a new game.
     void StartNewGame();
+
+    //v.05 Loads a saved game and resumes gameplay. 
+    void ContinueSavedGame(); 
 
 private:
     // Tracks whether the game is running.
@@ -65,12 +70,44 @@ private:
     //v.03 Shared party Inventory system. 
     Inventory mInventory; 
 
+    //v04 Shared party currency (Cowries).
+    int mCowries = 0; 
+
+    //v.04 Village merchant and purchasing system. 
+    void VisitMerchant(); 
+
+    //v.04 Expanding the inventory system to allow for item usage in and out of combat.
+    void UseItemOutsideofCombat(); 
+
     //v.03 Ama's necklace.
     bool mHasFoundNecklace = false; 
     bool mHasReturnedNecklace = false; 
 
     void DiscoverNecklace(); 
     void ReturnNecklacetoChief(); 
+
+    //v.04 Methods for exploring the endgame dungeon, Bloodroot Hollow.
+    void EnterBloodrootHollow(); 
+    void ExploreWitheredGrove(); 
+    void ExploreBoneStrewnPath(); 
+    void ExploreDesecratedShrine(); 
+    void ExploreHeartoftheHollow();    
+    void StartBonsamElderFight(); 
+
+    //v.04 Story variables for Bloodroot Hollow. 
+    bool mHasEnteredBloodrootHollow = false; 
+    bool mHasExploredWitheredGrove = false; 
+    bool mHasExploredBoneStrewnPath = false; 
+    bool mHasExploredDesecratedShrine = false; 
+    bool mHasExploredHeartoftheHollow = false; 
+    bool mHasDefeatedBonsamElder = false; 
+
+    //v.04 Game Ending. 
+    bool mHasHeardChiefsConfession = false; 
+    bool mHasHeardShamansWarning = false; 
+
+    void ChiefsConfession(); 
+    void ShamansWarning(); 
 
     // Combat system.
     CombatSystem mCombatSystem;

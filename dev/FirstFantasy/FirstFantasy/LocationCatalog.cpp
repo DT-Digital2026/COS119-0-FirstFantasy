@@ -156,7 +156,7 @@ Location LocationCatalog::CreateBloodRootHollow()
     );
 
     // Connected locations.
-    bloodrootHollow.AddConnection(15);
+    bloodrootHollow.AddConnection(16);
 
     // Enemy encounter pool.
     bloodrootHollow.AddEnemy(mBestiary.CreateVampireBat());
@@ -404,7 +404,7 @@ Location LocationCatalog::CreateTheDesecratedShrine()
 Location LocationCatalog::CreateHeartoftheHollow()
 {
     Location HeartoftheHollow(
-        15,
+        19,
         "The Heart of the Hollow",
         "An enormous, ancient tree rises from the center of a sunken clearing, its exposed roots twisting through the earth like grapsing fingers. "
         "A suffocating presence fills the air, and something powerful stirs within the darkness beneath the trunk.",
@@ -474,6 +474,18 @@ Location LocationCatalog::GetLocationByID(int LocationID)
 
     case 15: 
         return CreateRiverBankClearing(); 
+
+    case 16:
+        return CreateTheWitheredGrove(); 
+
+    case 17: 
+        return CreateTheBoneStrewnPath(); 
+
+    case 18: 
+        return CreateTheDesecratedShrine(); 
+
+    case 19:
+        return CreateHeartoftheHollow(); 
 
     default:
         return Location();

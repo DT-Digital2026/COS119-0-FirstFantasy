@@ -17,6 +17,9 @@ public:
 	//Returns a nullptr if the index is invalid.
 	const Item* GetItem(int Index) const; 
 
+	//v.04 Method to find an item by name. 
+	int FindItemByName(const std::string& name) const; 
+
 	//Remove an item from inventory. 
 	bool RemoveItem(int Index); 
 

@@ -15,7 +15,7 @@ public:
 	//Ora'Kanu - Abilities
 	Ability Raincall(); //Calls down rain, inflicting the 'wet' status. 
 	Ability LightningStrike(); //Strikes the enemy with lightning, does extra damage if 'wet' status is applied. 
-	Ability ThunderClap(); //Uses a thunderous blast with a chance to stun the enemy. 
+	Ability HealingRain(); //Heals the party. 
 	Ability Tempest(); //Summons a devastating storm to overwhelm the enemy.
 
 	//M'Batha - Abilities

@@ -150,10 +150,12 @@
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemCatalog.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="Location.cpp" />
     <ClCompile Include="LocationCatalog.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="PLayer.cpp" />
+    <ClCompile Include="SaveSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ability.h" />
@@ -167,10 +169,12 @@
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemCatalog.h" />
+    <ClInclude Include="ItemManager.h" />
     <ClInclude Include="Location.h" />
     <ClInclude Include="LocationCatalog.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SaveSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

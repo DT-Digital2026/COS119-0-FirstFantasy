@@ -17,6 +17,28 @@ public:
 	//Function declaration to exit the program. 
 	bool ConfirmExit(); 
 
+	//v.05 Function to clear screen as game progresses. 
+	static void ClearScreen(); 
+
+	//v.05 Will pause to allow the users to enter. 
+	static void PauseForEnter();
+
+	//Method for beautification.
+	static void SetTextColor(int color);
+
+	// Match the existing main palette.
+	static constexpr int GOLD = 14;
+	static constexpr int GREEN = 2;
+	static constexpr int IVORY = 7;
+	static constexpr int RED = 12;
+	// Additional character colors.
+	static constexpr int CYAN = 11;
+	static constexpr int BLUE = 9;
+	static constexpr int PURPLE = 13;
+	static constexpr int YELLOW = 6;
+	static constexpr int WHITE = 15;
+	static constexpr int GRAY = 8;
+
 private:
 	//Function declaration to get validated menu choice. 
 	int GetValidMenuChoice(int minChoice, int maxChoice);

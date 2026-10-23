@@ -72,11 +72,21 @@ int Character::GetMaxAse() const{
 }
 
 int Character::GetAttack() const {
-	return mAttack;
+	int totalAttack = mAttack; 
+
+	if (mHasWeapon) {
+		totalAttack += mEquippedWeapon.GetAtkBonus(); 
+	}
+	return totalAttack;
 }
 
 int Character::GetDefense() const{
-	return mDefense; 
+	int totalDefense = mDefense; 
+
+	if (mHasArmor) {
+		totalDefense += mEquippedArmor.GetDefBonus(); 
+	}
+	return totalDefense;
 }
 
 AbilityStatus Character::GetStatus() const {
@@ -163,4 +173,41 @@ void Character::DisplayAbilities() const
 		std::cout << "Ase: " << mAse << "/" << mMaxAse << std::endl;
 		std::cout << "Attack: " << mAttack << std::endl;
 		std::cout << "Defense: " << mDefense << std::endl;
+
+		std::cout << "Weapon: " << (mHasWeapon ? mEquippedWeapon.GetName() : "None") << std::endl;
+		std::cout << "Armor: " << (mHasArmor ? mEquippedArmor.GetName() : "None") << std::endl;
+	}
+
+	//===============================
+	//v.04 Equipment System
+	//===============================
+	bool Character::EquipItem(const Item& item) {
+		if (item.GetType() == ItemType::Weapon) {
+			mEquippedWeapon = item; 
+			mHasWeapon = true; 
+
+			std::cout << "\n" << mName << " equipped " << item.GetName() << "!\n"; 
+			return true; 
+		}
+		if (item.GetType() == ItemType::Armor) {
+			mEquippedArmor = item; 
+			mHasArmor = true; 
+
+			std::cout << "\n" << mName << " equipped " << item.GetName() << "!\n"; 
+			return true; 
+		}
+		std::cout << "\nThat item cannot be equipped.\n"; 
+		return false; 
+	}
+	const Item* Character::GetEquippedWeapon() const {
+		if (mHasWeapon) {
+			return &mEquippedWeapon; 
+		}
+		return nullptr; 
+	}
+	const Item* Character::GetEquippedArmor() const {
+		if (mHasArmor) {
+			return &mEquippedArmor; 
+		}
+		return nullptr; 
 	}

@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Location.h"
+#include "Menu.h"
 
 //Default Constructor.
 Location::Location() {
@@ -65,6 +66,9 @@ const std::vector<Enemy>& Location::GetEnemies() const {
 
 //Displays the location information.
 void Location::DisplayLocation() const {
+	Menu::SetTextColor(Menu::GOLD);
 	std::cout << "\n=-=-= " << mName << " =-=-=\n";
+	Menu::SetTextColor(Menu::IVORY);
+
 	std::cout << mDescription << std::endl;
 }

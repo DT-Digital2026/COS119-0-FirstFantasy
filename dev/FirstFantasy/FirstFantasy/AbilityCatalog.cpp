@@ -20,8 +20,8 @@ Ability AbilityCatalog::LightningStrike() {
 	return Ability;
 }
 
-Ability AbilityCatalog::ThunderClap() {
-	Ability Ability("Thunder Clap", "Uses a thunderous blast with a chance to stun the enemy. ", 10, 12, AbilityStatus::Stun, false, 30);
+Ability AbilityCatalog::HealingRain() {
+	Ability Ability("Healing Rain", "Calls on a calming rain to lightly heal the characters. ", 10, 18, AbilityStatus::None, false, 0);
 	return Ability;
 }
 

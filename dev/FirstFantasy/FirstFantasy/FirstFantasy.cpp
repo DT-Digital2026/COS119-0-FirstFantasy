@@ -22,8 +22,7 @@ int main()
             break; 
 
         case 2: 
-            //Load Game/Continue
-            //Placeholder
+            game.ContinueSavedGame(); 
             break; 
 
         case 3:

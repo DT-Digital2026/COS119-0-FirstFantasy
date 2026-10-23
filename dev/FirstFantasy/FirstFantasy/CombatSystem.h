@@ -4,7 +4,7 @@
 
 #include "Character.h"
 #include "Enemy.h"
-#include "CombatSystem.h"
+#include "Inventory.h"
 
 //Created default enum class to allow for randomization of turns during combat. 
 enum class CombatTurn {
@@ -24,7 +24,7 @@ public:
 	CombatSystem(); 
 
 	//Starts combat and returns the battle outcome. 
-	CombatResult StartCombat(Character& OraKanu, Character& MBatha, Enemy& Enemy); 
+	CombatResult StartCombat(Character& OraKanu, Character& MBatha, Enemy& Enemy, Inventory& Inventory); 
 
 private:
 	//Stores the turn order for the current battle. 
@@ -34,7 +34,7 @@ private:
 	void CreateTurnOrder(); 
 
 	//Handles the characters' combat order. 
-	void PlayerTurn(Character& Character, Enemy& Enemy); 
+	void PlayerTurn(Character& activeCharacter, Enemy& enemy, Inventory& inventory, Character& OraKanu, Character& Mbatha);
 
 	//Handles the enemy combat order. 
 	void EnemyTurn(Enemy& Enemy, Character& OraKanu, Character& MBatha); 

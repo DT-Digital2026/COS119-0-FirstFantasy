@@ -14,9 +14,12 @@ Item::Item() {
 	//Equipment values. 
 	mAtkBonus = 0; 
 	mDefBonus = 0; 
+
+	//v.04 Default price. 
+	mPrice = 0; 
 }
 //Overloaded constructor.
-Item::Item(const std::string& Name,const std::string& Description, ItemType Type, int HPRestore, int AseRestore, int AtkBonus, int DefBonus) {
+Item::Item(const std::string& Name,const std::string& Description, ItemType Type, int HPRestore, int AseRestore, int AtkBonus, int DefBonus, int Price) {
 	//Item Information. 
 	mName = Name; 
 	mDescription = Description; 
@@ -29,6 +32,9 @@ Item::Item(const std::string& Name,const std::string& Description, ItemType Type
 	//Equipment values. 
 	mAtkBonus = AtkBonus; 
 	mDefBonus = DefBonus; 
+
+	//v.04 Price
+	mPrice = Price; 
 }
 //Item Getters. 
 std::string Item::GetName() const {
@@ -57,4 +63,9 @@ int Item::GetAtkBonus() const {
 
 int Item::GetDefBonus() const {
 	return mDefBonus; 
+}
+
+//v.04 Returns the items purchase price. 
+int Item::GetPrice() const {
+	return mPrice; 
 }
