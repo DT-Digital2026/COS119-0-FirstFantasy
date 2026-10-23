@@ -19,9 +19,57 @@ namespace
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
     }
 }
+// Public color helper for use throughout the game.
+void Menu::SetTextColor(int color)
+{
+    SetConsoleTextAttribute(
+        GetStdHandle(STD_OUTPUT_HANDLE),
+        static_cast<WORD>(color)
+    );
+}
 
+//Pause for enter to support ClearScreen during combat. 
+
+void Menu::PauseForEnter()
+{
+    SetTextColor(FF_GOLD);
+
+    std::cout << "\n====================================================\n";
+    std::cout << "              PRESS ENTER TO CONTINUE               \n";
+    std::cout << "====================================================\n";
+
+    SetTextColor(FF_IVORY);
+
+    std::string input;
+    std::getline(std::cin, input);
+}
+
+//v.05 Method to clear screen
+void Menu::ClearScreen()
+{
+    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    CONSOLE_SCREEN_BUFFER_INFO screenInfo;
+    DWORD cellsWritten;
+
+    if (!GetConsoleScreenBufferInfo(console, &screenInfo)) {
+        return;
+    }
+
+    DWORD consoleSize =
+        screenInfo.dwSize.X * screenInfo.dwSize.Y;
+
+    COORD topLeft = { 0, 0 };
+
+    FillConsoleOutputCharacterA(console, ' ', consoleSize, topLeft, &cellsWritten);
+
+    FillConsoleOutputAttribute(console, screenInfo.wAttributes, consoleSize, topLeft, &cellsWritten);
+
+    SetConsoleCursorPosition(console, topLeft);
+}
 int Menu::DisplayMainMenu()
 {
+    Menu::ClearScreen();
     //v.05 - Polished main menu presentation.
     std::cout << "\n";
     
@@ -29,7 +77,7 @@ int Menu::DisplayMainMenu()
     std::cout << "====================================================\n";
 
     SetTextColor(FF_GOLD);
-        std::cout << "                                                    \n";
+    std::cout << "                                                    \n";
     std::cout << "                 F I R S T                          \n";
     std::cout << "               F A N T A S Y                        \n";
     std::cout << "                                                    \n";
@@ -116,160 +164,261 @@ int Menu::GetValidMenuChoice(int minChoice, int maxChoice)
 }
 
 void Menu::HowToPlay() {
+    Menu::ClearScreen();
     //Overall self explanitory. Created a how to play menu with instructions on basic gameplay.
+    SetTextColor(FF_GREEN);
     std::cout << "======================================================================================================================" << std::endl;
+   
+    SetTextColor(FF_GOLD);
     std::cout << "                                                     How to Play                                                      " << std::endl;
+
+    SetTextColor(FF_GREEN);
     std::cout << "======================================================================================================================" << std::endl;
 
-    std::cout << "Exploration: " << std::endl;
-    std::cout << "Choose numbered options to explore locations, investigate your surroundings, speak with NPC's, and progress the story." << std::endl;
-    std::cout << "\n";
+    SetTextColor(FF_GOLD);
+    std::cout << "  EXPLORATION\n";
+    SetTextColor(FF_IVORY);
+    std::cout << "  Choose numbered options to explore locations,\n";
+    std::cout << "  investigate surroundings, speak with NPCs,\n";
+    std::cout << "  and progress through the story.\n\n";
 
-    std::cout << "Combat: " << std::endl;
-    std::cout << "Enjoy turn based combat.Choose attacks, abilities, defensive actions, or items during your turn." << std::endl;
-    std::cout << "\n";
+    SetTextColor(FF_GOLD);
+    std::cout << "  COMBAT\n";
+    SetTextColor(FF_IVORY);
+    std::cout << "  Battles are turn-based. Choose attacks,\n";
+    std::cout << "  special abilities, or items to defeat enemies.\n";
+    std::cout << "  Each character has unique combat strengths.\n\n";
 
-    std::cout << "Enemy Attacks:" << std::endl;
-    std::cout << "Enemies may telegraph their attacks.Pay attention to their behavior and choose how to react." << std::endl;
-    std::cout << "\n";
+    SetTextColor(FF_GOLD);
+    std::cout << "  HEALTH (HP)\n";
+    SetTextColor(FF_IVORY);
+    std::cout << "  HP represents a character's health.\n";
+    std::cout << "  If the entire party reaches 0 HP, you lose.\n";
+    std::cout << "  Use healing items or abilities to recover.\n\n";
 
-    std::cout << "Dodge: " << std::endl;
-    std::cout << "Attempt to avoid an incoming attack." << std::endl;
-    std::cout << "\n";
+    SetTextColor(FF_GOLD);
+    std::cout << "  ASE\n";
+    SetTextColor(FF_IVORY);
+    std::cout << "  Ase is the spiritual energy used to perform\n";
+    std::cout << "  special abilities. Powerful abilities consume\n";
+    std::cout << "  more Ase, so manage it carefully.\n\n";
 
-    std::cout << "Guard: " << std::endl;
-    std::cout << "Reduce damage from an incoming attack." << std::endl; 
-    std::cout << "\n";
+    SetTextColor(FF_GOLD);
+    std::cout << "  STATUS EFFECTS\n";
+    SetTextColor(FF_IVORY);
+    std::cout << "  Certain attacks and abilities apply effects:\n\n";
 
-    std::cout << "Parry: " << std::endl;
-    std::cout << "A riskier defensive option that may interrupt and enemy attack and create an opportunity to counter." << std::endl;
-    std::cout << "\n";
+    std::cout << "    WET    - Enhances lightning-based attacks.\n";
+    std::cout << "    POISON - Causes damage over time.\n";
+    std::cout << "    BLEED  - Causes damage over time.\n";
+    std::cout << "    STUN   - Prevents an enemy from acting.\n\n";
 
-    std::cout << "Health: " << std::endl;
-    std::cout << "HP Represents a players health.If the entire party reaches 0, the party is defeated." << std::endl;
-    std::cout << "\n";
+    SetTextColor(FF_GOLD);
+    std::cout << "  ABILITY COMBINATIONS\n";
+    SetTextColor(FF_IVORY);
+    std::cout << "  Some abilities become more effective when\n";
+    std::cout << "  combined with status effects.\n\n";
 
-    std::cout << "Ase: " << std::endl;
-    std::cout << "In Yoruban cosmology, Ase is the divine life force that flows through all.In First Fantasy, Ase replaces mana as the resource to spend on abilities." << std::endl;
-    std::cout << "\n";
+    std::cout << "  Example: Ora'Kanu can use Raincall to apply\n";
+    std::cout << "  WET to an enemy. Following up with Lightning\n";
+    std::cout << "  Strike deals increased damage to WET targets.\n\n";
 
-    std::cout << "Inventory: " << std::endl;
-    std::cout << "Collect and use consumables, weapons, armor, and important story items throughout the adventure." << std::endl;
-    std::cout << "\n";
+    SetTextColor(FF_GOLD);
+    std::cout << "  INVENTORY\n";
+    SetTextColor(FF_IVORY);
+    std::cout << "  Collect and use healing items, weapons, armor,\n";
+    std::cout << "  and important story items throughout the game.\n\n";
 
-    std::cout << "Saving: " << std::endl;
-    std::cout << "Save your progress during exploration and load your saved adventure from the main menu." << std::endl;
-    std::cout << "\n";
+    SetTextColor(FF_GOLD);
+    std::cout << "  COWRIES\n";
+    SetTextColor(FF_IVORY);
+    std::cout << "  Cowries are the currency of Akantha.\n";
+    std::cout << "  Earn them by defeating enemies and spend\n";
+    std::cout << "  them at merchants for useful equipment.\n\n";
 
-    std::cout << "Press enter to return to the main menu..."; 
-    std::cout << "\n";
+    SetTextColor(FF_GOLD);
+    std::cout << "  SAVING\n";
+    SetTextColor(FF_IVORY);
+    std::cout << "  Save your progress during exploration or\n";
+    std::cout << "  from the gameplay menu. Load your adventure\n";
+    std::cout << "  from the main menu.\n\n";
+
+    SetTextColor(FF_GREEN);
+    std::cout << "====================================================\n";
+
+    SetTextColor(FF_GOLD);
+    std::cout << "          PRESS ENTER TO RETURN                     \n";
+
+    SetTextColor(FF_GREEN);
+    std::cout << "====================================================\n\n";
+
+    SetTextColor(FF_IVORY);
 
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
     std::cin.get(); 
     }
 
 void Menu::DisplayLore() {
+    Menu::ClearScreen();
     //Created a lore menu to detial some of the information about the games world.
     bool LoreMenuRunning = true; 
 
     while (LoreMenuRunning) {
-        std::cout << "==============================================================================================" << std::endl;
-        std::cout << "                                             Lore                                             " << std::endl;
+        SetTextColor(FF_GREEN);
         std::cout << "==============================================================================================" << std::endl;
 
-        std::cout << "1. The World" << std::endl;
-        std::cout << "2. Characters" << std::endl;
-        std::cout << "3. Locations" << std::endl;
-        std::cout << "4. Bestiary" << std::endl;
-        std::cout << "5. Return to Main Menu" << std::endl;
+        SetTextColor(FF_GOLD);
+        std::cout << "                                             Lore                                             " << std::endl;
+
+        SetTextColor(FF_GREEN);
+        std::cout << "==============================================================================================" << std::endl;
+
+        SetTextColor(FF_IVORY);
+        std::cout << "1. THE WORLD" << std::endl;
+        std::cout << "2. CHARACTERS" << std::endl;
+        std::cout << "3. LOCATIONS" << std::endl;
+        std::cout << "4. BESTIARY" << std::endl;
+        std::cout << "5. RETURN TO MAIN MENU" << std::endl;
 
         int choice = GetValidMenuChoice(1, 5);
         
         switch (choice) {
         case 1:
+            Menu::ClearScreen();
+            SetTextColor(FF_GREEN);
             std::cout << "==============================================================================================" << std::endl;
+
+            SetTextColor(FF_GOLD);
             std::cout << "                                       World Lore                                             " << std::endl;
+
+            SetTextColor(FF_GREEN);
             std::cout << "==============================================================================================" << std::endl;            
 
-            std::cout << "The World of Akantha " << std::endl;
-            std::cout << "Akantha is an isolated and largely unexplored continent." << std::endl;
-            std::cout << "At its heart is an enormous mountain, that dominates the " << std::endl;
-            std::cout << "landscape and can be seen from much of the continent. " << std::endl;
-            std::cout << "This great mountain is known to be the home of the gods. " << std::endl;
+            SetTextColor(FF_GOLD);
+            std::cout << "THE WORLD OF AKANTHA\n";
 
+            SetTextColor(FF_IVORY);
+            std::cout << "Akantha is an isolated and largely unexplored continent.\n";
+            std::cout << "At its heart stands an enormous mountain, visible from\n";
+            std::cout << "much of the surrounding land. For generations, its\n";
+            std::cout << "inhabitants have been worshipped as gods.\n\n";
+
+            SetTextColor(FF_GOLD);
+            std::cout << "THE CREATOR\n";
+
+            SetTextColor(FF_IVORY);
+            std::cout << "Before the peoples of Akantha, before its kingdoms,\n";
+            std::cout << "and before the beings mortals would call gods, there\n";
+            std::cout << "was the Creator.\n\n";
+
+            std::cout << "The Creator alone possesses the power to bring forth\n";
+            std::cout << "true life. Every living thing carries the Creator's\n";
+            std::cout << "breath, the divine essence of its existence.\n\n";
+
+            SetTextColor(FF_GOLD);
+            std::cout << "ASE\n";
+
+            SetTextColor(FF_IVORY);
+            std::cout << "Ase is the spiritual force flowing through all life.\n";
+            std::cout << "Those capable of wielding Ase can influence the\n";
+            std::cout << "world around them.\n\n";
+
+            std::cout << "Ase can heal, strengthen, transform, and shape\n";
+            std::cout << "creation. Yet even its greatest wielders cannot\n";
+            std::cout << "create true life from nothing.\n\n";
+
+            SetTextColor(FF_GOLD);
+            std::cout << "THE ASEKI\n";
+
+            SetTextColor(FF_IVORY);
+            std::cout << "The Aseki were the celestial servants of the Creator.\n";
+            std::cout << "They possessed tremendous power and could reshape\n";
+            std::cout << "the Creator's work, but could not create true life.\n\n";
+
+            std::cout << "For some, this limitation became a source of resentment.\n\n";
+
+            SetTextColor(FF_GOLD);
+            std::cout << "THE FIRST REBELLION\n";
+
+            SetTextColor(FF_IVORY);
+            std::cout << "Some among the Aseki attempted to create life.\n";
+            std::cout << "Their efforts succeeded, but only in part.\n\n";
+
+            std::cout << "Their creations lived, yet lacked the Creator's\n";
+            std::cout << "breath. What emerged was distorted, unnatural,\n";
+            std::cout << "and monstrous.\n\n";
+
+            std::cout << "Rather than accept their limitations, the rebellious\n";
+            std::cout << "Aseki turned against the Creator.\n\n";
+
+            SetTextColor(FF_GOLD);
+            std::cout << "THE FALL\n";
+
+            SetTextColor(FF_IVORY);
+            std::cout << "The rebellious Aseki were cast from the heavens\n";
+            std::cout << "down to Akantha. There, they established themselves\n";
+            std::cout << "upon the great mountain at the continent's center.\n\n";
+
+            std::cout << "In time, the mortals living beneath them came to\n";
+            std::cout << "worship these powerful beings as gods.\n\n";
+
+            SetTextColor(FF_GOLD);
+            std::cout << "ORISHA AND ABOSOM\n";
+
+            SetTextColor(FF_IVORY);
+            std::cout << "Even among the fallen Aseki, distrust began to grow.\n";
+            std::cout << "A great division emerged, giving rise to two\n";
+            std::cout << "powerful factions: the Orisha and the Abosom.\n\n";
+
+            std::cout << "The Orisha accepted that they could not create true\n";
+            std::cout << "life. Though angered by their exile, they chose to\n";
+            std::cout << "protect, guide, and shape existing creation.\n\n";
+
+            std::cout << "The Abosom could not accept this limitation.\n";
+            std::cout << "Their resentment drove them toward destruction\n";
+            std::cout << "and attempts to remake creation in their image.\n\n";
+
+            SetTextColor(FF_GOLD);
+            std::cout << "THE DIVINE CONFLICT\n";
+
+            SetTextColor(FF_IVORY);
+            std::cout << "The conflict between the Orisha and Abosom is not\n";
+            std::cout << "simply a war between good and evil.\n\n";
+
+            std::cout << "Both possess immense power. Both can influence the\n";
+            std::cout << "lives of mortals. Yet they disagree over what beings\n";
+            std::cout << "with such power are meant to do with it.\n\n";
+
+            SetTextColor(FF_GOLD);
+            std::cout << "AKANTHA TODAY\n";
+
+            SetTextColor(FF_IVORY);
+            std::cout << "The consequences of this ancient conflict can still\n";
+            std::cout << "be felt throughout Akantha.\n\n";
+
+            std::cout << "Monsters roam the wilderness. Ancient powers continue\n";
+            std::cout << "to influence the land. Mortals worship beings whose\n";
+            std::cout << "true origins have been obscured by generations of\n";
+            std::cout << "myth and tradition.\n\n";
+
+            std::cout << "In a small fishing village, desperate prayers call\n";
+            std::cout << "upon powers far greater than those who offer them.\n";
+            std::cout << "And beyond the village, something unnatural stirs\n";
+            std::cout << "within the depths of Bloodroot Hollow.\n\n";
+
+            SetTextColor(FF_IVORY);
             std::cout << "\n";
 
-            std::cout << "The Creator:" << std::endl;
-            std::cout << "Before the peoples of Akantha, before its kingdoms, and before " << std::endl;
-            std::cout << "the beings mortals would come to call gods, there was the creator." << std::endl;
+            SetTextColor(FF_GREEN);
+            std::cout << "====================================================\n";
 
-            std::cout << "The Creator alone posses the power to truly create life." << std::endl;
+            SetTextColor(FF_GOLD);
+            std::cout << "          PRESS ENTER TO RETURN                     \n";
 
-            std::cout << "Life in Akantha carries the breath of the Creator, the divine " << std::endl;
-            std::cout << "essence from which living things draw their existence." << std::endl;
+            SetTextColor(FF_GREEN);
+            std::cout << "====================================================\n\n";
 
-            std::cout << "\n";
-
-            std::cout << "Ase" << std::endl;
-            std::cout << "Ase is the spiritual force that flows through all life. " << std::endl;
-            std::cout << "Those capable of of weidling Ase can use it to influence the world around them. " << std::endl;
-            std::cout << "Ase can heal, strengthen, transform and shape reality." << std::endl;
-            std::cout << "But those that weild Ase cannot create true life. " << std::endl;
-
-            std::cout << "\n";
-
-            std::cout << "The Aseki" << std::endl;
-            std::cout << "The Aseki were the celestial servants of the Creator." << std::endl;
-            std::cout << "They possessed tremendous power and could shape the work of the Creator, " << std::endl;
-            std::cout << "but they did not possess the power to create life from nothing." << std::endl;
-
-            std::cout << "For some, this limitation became a source of resentment." << std::endl;
-
-            std::cout << "\n";
-
-            std::cout << "The First Rebellion" << std::endl;
-            std::cout << "Some of the Aseki attemtped to create. They were successful...somewhat." << std::endl;
-            std::cout << "Their creations lived, but not as intended." << std::endl;
-            std::cout << "Without the Creators breath, their attempts became distorted and monstrous." << std::endl;
-            std::cout << "Rather than accept their limitations, the rebellious Aseki turned against the Creator." << std::endl;
-
-            std::cout << "\n";
-
-            std::cout << "The Fall" << std::endl;
-            std::cout << "the rebellious Aseki were cast out of the Heavens down to Akantha. They made their home" << std::endl;
-            std::cout << "upon the great mountain at the center of the continent. In time, the people livnig beneath them" << std::endl;
-            std::cout << "came to regard these powerful beings as gods." << std::endl;
-
-            std::cout << "\n";
-
-            std::cout << "Orisha and Abosom" << std::endl;
-            std::cout << "Distrust stirred even among the Aseki that were cast down to Akantha. The first rift caused two great factions" << std::endl;
-            std::cout << "The Orisha and the Abosom. Angered at being cast out, the Orisha accepted the fact that they could not create." << std::endl;
-            std::cout << "The Orisha chose to use their power to protect, guide, and shape the creation that already exists." << std::endl;
-
-            std::cout << "The Abosom struggled with this limitation. Their resentment toward their inability to create has driven" << std::endl;
-            std::cout << "them towards destruction and attempts to reshape creation in their image." << std::endl;
-
-            std::cout << "\n";
-
-            std::cout << "The Divine Conflict" << std::endl;
-            std::cout << "The conflict between the Orisha and the Abosom is not simply a war between good and evil." << std::endl;
-            std::cout << "Both possess immense power, both can alter the lives of mortals, but they disagree over what" << std::endl;
-            std::cout << "beings with such power are meant to do with it." << std::endl;
-
-            std::cout << "\n";
-
-            std::cout << "Akantha Today" << std::endl;
-            std::cout << "The consequences of this ancient conflict can still be found throughout Akantha." << std::endl;
-            std::cout << "Monsters roam the wilderness, ancient powers still influence the land. Mortals" << std::endl;
-            std::cout << "worship beings whose true origins have been obscured by generations of myth and tradition." << std::endl;
-
-            std::cout << "And above it all stands the great mountain at the center of Akantha, home to those the mortals call gods." << std::endl;
-            std::cout << "And as our story begins, a new god is born...not Orisha nor Abosom..." << std::endl;
-
-            std::cout << "\n";
-
-            std::cout << "Press Enter to return to Lore." << std::endl;
+            SetTextColor(FF_IVORY);
 
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.get();
@@ -277,60 +426,103 @@ void Menu::DisplayLore() {
             break; 
 
         case 2:
+            Menu::ClearScreen();
+            SetTextColor(FF_GREEN);
             std::cout << "==============================================================================================" << std::endl;
+
+            SetTextColor(FF_GOLD);
             std::cout << "                                   Character Lore                                             " << std::endl;
+
+            SetTextColor(FF_GREEN);
             std::cout << "==============================================================================================" << std::endl;              
 
-            std::cout << "Ora'Kanu - Voice of the Storm" << std::endl;
-            std::cout << "\n";
+            SetTextColor(FF_GOLD);
+            std::cout << "ORA'KANU - VOICE OF THE STORM\n";
 
-            std::cout << "Ora is one of the younger Orisha's that walk the lands of Akantha." << std::endl;
+            SetTextColor(FF_IVORY);
+            std::cout << "Ora'Kanu is one of the younger Orisha who walk the\n";
+            std::cout << "lands of Akantha. Unlike many of the older powers,\n";
+            std::cout << "she accepts that the Orisha were never meant to\n";
+            std::cout << "create life.\n\n";
 
-            std::cout << "Unlike the older powers of the continent, Ora accepts that the Orisha were not" << std::endl;
-            std::cout << "intended to create life. " << std::endl;
+            std::cout << "Instead, she believes their power exists to shape,\n";
+            std::cout << "protect, and preserve the creation entrusted to them.\n\n";
 
-            std::cout << "Instead, she believed their power exists to shape, protect, and maintain" << std::endl;
-            std::cout << "the creation that was entrusted to them." << std::endl;
+            std::cout << "Ora'Kanu possesses a powerful connection to the\n";
+            std::cout << "weather and the natural world. By channeling Ase,\n";
+            std::cout << "she can summon the winds, call upon the rains,\n";
+            std::cout << "and unleash the fury of the storm.\n\n";
 
-            std::cout << "\n";
+            std::cout << "Her enchanted bracers help focus this power,\n";
+            std::cout << "allowing her to direct the forces of nature\n";
+            std::cout << "against those who threaten Akantha.\n\n";
 
-            std::cout << "Ora'Kanu posses a powerful connection to the forces of weather and the natural world. " << std::endl;
-            std::cout << "Usigng Ase, the lifeforce of the world, she can call upon the winds, the rains," << std::endl;
-            std::cout << "and the fury of the storm." << std::endl;
+            std::cout << "In battle, Ora'Kanu can summon rain to drench\n";
+            std::cout << "her enemies before striking them with lightning.\n";
+            std::cout << "Her command of the storm makes her formidable,\n";
+            std::cout << "but her abilities demand careful management of Ase.\n\n";
 
-            std::cout << "Her bracers help her focus this power, allowing her to direct the forces of the storm against her enemies." << std::endl;
+            std::cout << "Where others see destruction in the storm,\n";
+            std::cout << "Ora'Kanu sees the power to protect life.\n\n";
 
-            std::cout << "\n";
+            SetTextColor(FF_GREEN);
+            std::cout << "====================================================\n\n";
 
-            std::cout << "Her command of Ase makes Ora'Kanu extremely powerful, her reliance upon it, also requires her to carfully" << std::endl;
-            std::cout << "her strength during prolonged battles." << std::endl;
+            SetTextColor(FF_GOLD);
+            std::cout << "M'BATHA - FATHER OF DHAMBE\n";
 
-            std::cout << "\n";
+            SetTextColor(FF_IVORY);
+            std::cout << "M'Batha is a powerful warrior whose mastery of\n";
+            std::cout << "combat helped establish the traditions of Dhambe.\n";
+            std::cout << "His body is his weapon, and his discipline is\n";
+            std::cout << "the foundation of his strength.\n\n";
 
-            std::cout << "M'Batha - Father of Dhambe" << std::endl;
-            std::cout << "\n";
+            std::cout << "One hand, wrapped and prepared for striking,\n";
+            std::cout << "delivers his most devastating blows. His other\n";
+            std::cout << "hand serves as his shield, allowing him to\n";
+            std::cout << "withstand attacks and answer with brutal counters.\n\n";
 
-            std::cout << "M'Batha is a powerful warrior whose fighting style taught others the traditions of Dhambe." << std::endl;
-            std::cout << "His body is his weapon." << std::endl;
+            std::cout << "M'Batha channels Ase through his martial techniques,\n";
+            std::cout << "but he does not depend upon it as heavily as\n";
+            std::cout << "Ora'Kanu. His greatest strengths come from\n";
+            std::cout << "discipline, endurance, and physical power.\n\n";
 
-            std::cout << "\n"; 
+            std::cout << "His mastery of Dhambe allows him to deliver\n";
+            std::cout << "powerful strikes and combinations, overwhelming\n";
+            std::cout << "enemies through strength and relentless pressure.\n\n";
 
-            std::cout << "One hand, wrapped and prepared for striking delivers his most powerful attacks." << std::endl;
-            std::cout << "His other hand serves as his shield, protecting him while allowing for devasting counters on his enemies." << std::endl;
+            std::cout << "He can withstand punishment that would overwhelm\n";
+            std::cout << "an ordinary mortal, standing firm when others fall.\n\n";
 
-            std::cout << "M'Batha can channel his Ase through his martial techniques, but he does not depend on it to the extent" << std::endl;
-            std::cout << "that Ora does. His strength comes more from discipline, endurance, timing, and the ability to withstand" << std::endl;
-            std::cout << "punishment that would overwhelm a mortal fighter." << std::endl;
+            SetTextColor(FF_GREEN);
+            std::cout << "====================================================\n\n";
 
-            std::cout << "\n"; 
+            SetTextColor(FF_GOLD);
+            std::cout << "TWO HEROES, ONE PURPOSE\n";
 
-            std::cout << "Where Ora'Kanu commands the battlefield through supernatural power, M'batha meets danger face to face." << std::endl;
-            std::cout << "Together, the two balance supernatural power with physical strength, each capable of protecting" << std::endl;
-            std::cout << "the other with their own abilities are weakest." << std::endl;
+            SetTextColor(FF_IVORY);
+            std::cout << "Where Ora'Kanu commands the battlefield through\n";
+            std::cout << "supernatural power, M'Batha meets danger face to face.\n\n";
 
-            std::cout << "\n"; 
+            std::cout << "One commands the fury of the storm.\n";
+            std::cout << "The other embodies the strength of the warrior.\n\n";
 
-            std::cout << "Press Enter to return to the Lore Menu." << std::endl;
+            std::cout << "Together, they balance spiritual power with\n";
+            std::cout << "physical might, each protecting the other\n";
+            std::cout << "where their individual strengths fall short.\n\n";
+
+            SetTextColor(FF_IVORY);
+
+            SetTextColor(FF_GREEN);
+            std::cout << "====================================================\n";
+
+            SetTextColor(FF_GOLD);
+            std::cout << "          PRESS ENTER TO RETURN                     \n";
+
+            SetTextColor(FF_GREEN);
+            std::cout << "====================================================\n\n";
+
+            SetTextColor(FF_IVORY);
 
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.get();
@@ -338,100 +530,168 @@ void Menu::DisplayLore() {
             break; 
 
         case 3:
+            Menu::ClearScreen();
+            SetTextColor(FF_GREEN);
             std::cout << "==============================================================================================" << std::endl;
+
+            SetTextColor(FF_GOLD);
             std::cout << "                                    Location Lore                                             " << std::endl;
-            std::cout << "==============================================================================================" << std::endl;              
 
-            std::cout << "The Continent of Akantha" << std::endl;
+            SetTextColor(FF_GREEN);
+            std::cout << "==============================================================================================" << std::endl;  
 
-            std::cout << "Akantha is a vast and ancient continent shaped by both the natural world and the powers that have" << std::endl;
-            std::cout << "walked upon it. Dense forests, sprawling wilderness, rivers, mountains, and isolated settlements" << std::endl;
-            std::cout << "stretch across its land. Much of Akantha remains wild, and traveling beyond the safety of" << std::endl; 
-            std::cout << "its settlements is rarely without danger." << std::endl;
+            SetTextColor(FF_GOLD);
+            std::cout << "THE FISHING VILLAGE\n";
 
-            std::cout << "\n"; 
+            SetTextColor(FF_IVORY);
+            std::cout << "A modest settlement rests at the edge of Akantha's\n";
+            std::cout << "wilderness. Its people survive through fishing,\n";
+            std::cout << "trade, and the guidance of their elders.\n\n";
 
-            std::cout << "The Coastal Village" << std::endl;
+            std::cout << "The village center connects the homes and gathering\n";
+            std::cout << "places of its inhabitants. At the wharf, fishermen\n";
+            std::cout << "prepare their boats and tend to their daily catch.\n\n";
 
-            std::cout << "Along the coast of Akantha stands a small village whose people have survived through cooperation," << std::endl;
-            std::cout << "tradition, and respect for the dangers beyond their homes. Though distant from the larger settlements" << std::endl;
-            std::cout << "of Akantha, the village has endured through fishing, hunting, trade, and the guidance of its elders." << std::endl;
+            std::cout << "The local merchant offers supplies to travelers,\n";
+            std::cout << "while the chief oversees the village's affairs.\n";
+            std::cout << "Within a secluded hut, the shaman tends to matters\n";
+            std::cout << "of the spiritual world.\n\n";
 
-            std::cout << "Recently however, an uneasy fear has settled over the village." << std::endl;
+            SetTextColor(FF_GOLD);
+            std::cout << "THE ROADS OF AKANTHA\n";
 
-            std::cout << "Children have begun to disappear, old agreements have been broke and whispers of something lurking beyond the" << std::endl;
-            std::cout << "village have begun to spread." << std::endl;
+            SetTextColor(FF_IVORY);
+            std::cout << "Worn roads wind through the wilderness, connecting\n";
+            std::cout << "isolated settlements and forgotten pathways.\n\n";
 
-            std::cout << "\n"; 
+            std::cout << "An ancient crossroads divides the routes toward\n";
+            std::cout << "the forest and river. Beyond the safety of the\n";
+            std::cout << "village, dangerous predators roam freely.\n\n";
 
-            std::cout << "The Wilderness" << std::endl;
+            SetTextColor(FF_GOLD);
+            std::cout << "THE WILDERNESS\n";
 
-            std::cout << "Beyond the village stretches an untamed wilderness where the paths of covolization quickly disappear. Snakes" << std::endl;
-            std::cout << "hide beneath the undergrowth, hyenas hunt in packs, and powerful predators stalk those who wander too far from " << std::endl;
-            std::cout << "the safety of the road. River's crossing the wilderness bring dangers of their own, with crocodiles waiting beneath" << std::endl;
-            std::cout << "otherwise peaceful waters." << std::endl;
+            SetTextColor(FF_IVORY);
+            std::cout << "Dense vegetation and towering trees surround the\n";
+            std::cout << "village. Beneath their canopy, predators stalk\n";
+            std::cout << "the overgrown trails.\n\n";
 
-            std::cout << "\n"; 
+            std::cout << "Abandoned campsites hint at travelers who may never\n";
+            std::cout << "have returned. Along the riverbanks, the wilderness\n";
+            std::cout << "conceals both danger and forgotten discoveries.\n\n";
 
-            std::cout << "Bloodroot Hollow" << std::endl;
+            SetTextColor(FF_GOLD);
+            std::cout << "BLOODROOT HOLLOW\n";
 
-            std::cout << "Deep within the wilderness lies a place the people of the surrounding settlements rarely speak of openly." << std::endl;
-            std::cout << "Bloodroot hollow is an ancient region of twisted roots, darkened earth, and dense forest where sunlight struggles" << std::endl;
-            std::cout << "to reach the ground. Bats gather in unnatural numbers and travelers are warned against entering the hollow after" << std::endl;
-            std::cout << "sunset. Stories claim that something ancient dwells beneath the canopy." << std::endl;
+            SetTextColor(FF_IVORY);
+            std::cout << "Deep within the wilderness lies Bloodroot Hollow,\n";
+            std::cout << "a place where something unnatural has taken hold.\n\n";
 
+            std::cout << "Twisted roots and dark stone mark its entrance.\n";
+            std::cout << "Beyond them stands the Withered Grove, where dying\n";
+            std::cout << "trees bleed crimson sap into the corrupted earth.\n\n";
+
+            std::cout << "Deeper still, a bone-strewn path winds between\n";
+            std::cout << "ancient trees marked with mysterious symbols.\n";
+            std::cout << "Few would willingly venture into such a place.\n\n";
+
+            SetTextColor(FF_IVORY);
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.get();
+
+            SetTextColor(FF_GREEN);
+            std::cout << "====================================================\n";
+
+            SetTextColor(FF_GOLD);
+            std::cout << "          PRESS ENTER TO RETURN                     \n";
+
+            SetTextColor(FF_GREEN);
+            std::cout << "====================================================\n\n";
+
 
             break; 
 
         case 4:
+            Menu::ClearScreen();
+            SetTextColor(FF_GREEN);
             std::cout << "==============================================================================================" << std::endl;
-            std::cout << "                                       Beastiary                                              " << std::endl;
-            std::cout << "==============================================================================================" << std::endl;              
 
+            SetTextColor(FF_GOLD);
+            std::cout << "                                       Beastiary                                              " << std::endl;
+
+            SetTextColor(FF_GREEN);
+            std::cout << "==============================================================================================" << std::endl;              
+            
+            SetTextColor(FF_GOLD);
             std::cout << "Venomous Snake" << std::endl;
+            SetTextColor(FF_IVORY);
             std::cout << "Common throughout the wilds of Akantha, venomous snakes rely on speed and dangerous bites to bring down prey." << std::endl;
             std::cout << "\n";
 
+            SetTextColor(FF_GOLD);
             std::cout << "Hyena" << std::endl;
+            SetTextColor(FF_IVORY);
             std::cout << "Aggresive pack hunters that roam the wilderness. A loan hyena is dangerous, a pack is far worse." << std::endl; 
             std::cout << "\n";
 
+            SetTextColor(FF_GOLD);
             std::cout << "Bat" << std::endl;
+            SetTextColor(FF_IVORY);
             std::cout << "Common across Akantha, especially in caves and dense forests. Large gatherings signal danger nearby." << std::endl;
             std::cout << "\n";
 
+            SetTextColor(FF_GOLD);
             std::cout << "Leopard" << std::endl;
+            SetTextColor(FF_IVORY);
             std::cout << "Powerful and patient predators that stalk prey from concealment." << std::endl;
             std::cout << "\n";
 
+            SetTextColor(FF_GOLD);
             std::cout << "Crocodile" << std::endl;
+            SetTextColor(FF_IVORY);
             std::cout << "Massive reptiles found along river's and wetlands that strike with brutal bite force." << std::endl;
             std::cout << "\n";
 
+            SetTextColor(FF_GOLD);
             std::cout << "Vampire Bat" << std::endl;
+            SetTextColor(FF_IVORY);
             std::cout << "An unnatrual relative of the common bat with a voracious hunger for blood." << std::endl;
             std::cout << "\n";
 
+            SetTextColor(FF_GOLD);
             std::cout << "Bat Swarm" << std::endl;
+            SetTextColor(FF_IVORY);
             std::cout << "A mass of bats capable of overwhelming prey through sheer numbers." << std::endl;
             std::cout << "\n";
 
+            SetTextColor(FF_GOLD);
             std::cout << "Bonsam Thrall" << std::endl;
+            SetTextColor(FF_IVORY);
             std::cout << "Servants bound to the will of the bonsam, whatever lives they once possessed have been abandoned." << std::endl;
             std::cout << "\n";
 
+            SetTextColor(FF_GOLD);
             std::cout << "Bonsam" << std::endl;
+            SetTextColor(FF_IVORY);
             std::cout << "Ancient vampiric beings feared across the plains. Their true nature is surrounded by myth and legend." << std::endl;
             std::cout << "\n";
 
+            SetTextColor(FF_GOLD);
             std::cout << "Elder Bonsam" << std::endl;
+            SetTextColor(FF_IVORY);
             std::cout << "Those that rule the Bonsam." << std::endl;
             std::cout << "\n";
 
-            std::cout << "Press Enter to return to the Lore Menu." << std::endl;
-            std::cout << "\n";
+            SetTextColor(FF_GREEN);
+            std::cout << "====================================================\n";
+
+            SetTextColor(FF_GOLD);
+            std::cout << "          PRESS ENTER TO RETURN                     \n";
+
+            SetTextColor(FF_GREEN);
+            std::cout << "====================================================\n\n";
+
+            SetTextColor(FF_IVORY);            
 
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.get();
@@ -445,21 +705,51 @@ void Menu::DisplayLore() {
         }
     }
  }
-void Menu::DisplayCredits() {
-    //Blah blah blah, credits.
-    std::cout << "==============================================================================================" << std::endl;
-    std::cout << "                                    Credits                                                   " << std::endl;
-    std::cout << "==============================================================================================" << std::endl;              
+void Menu::DisplayCredits()
+{
+    Menu::ClearScreen();
 
-    std::cout << "First Fantasy: The Dark Continent." << std::endl;
+    SetTextColor(FF_GREEN);
+    std::cout << "\n====================================================\n";
 
-    std::cout << "Created and Developed by....and literally everything else: Brad Watson" << std::endl;
+    SetTextColor(FF_GOLD);
+    std::cout << "                      CREDITS                       \n";
 
-    std::cout << "\n"; 
+    SetTextColor(FF_GREEN);
+    std::cout << "====================================================\n\n";
+
+    SetTextColor(FF_IVORY);
+    std::cout << "  FIRST FANTASY: THE DARK CONTINENT\n\n";
+
+    SetTextColor(FF_GOLD);
+    std::cout << "  CREATED AND DEVELOPED BY\n";
+
+    SetTextColor(FF_IVORY);
+    std::cout << "  Brad Watson\n\n";
+
+    SetTextColor(FF_GOLD);
+    std::cout << "  Programming, Design, Writing, and Everything Else\n";
+
+    SetTextColor(FF_IVORY);
+    std::cout << "  One developer. One vision. One adventure.\n\n";
+
+    SetTextColor(FF_GREEN);
+    std::cout << "====================================================\n";
+
+    SetTextColor(FF_GOLD);
+    std::cout << "              PRESS ENTER TO RETURN                 \n";
+
+    SetTextColor(FF_GREEN);
+    std::cout << "====================================================\n\n";
+
+    SetTextColor(FF_IVORY);
+
+    std::cin.get();
 }
 
 bool Menu::ConfirmExit(){
     //Exit game function. 
+    SetTextColor(FF_IVORY);
     std::cout << "Are you sure you want to exit?" << std::endl;
     std::cout << "1. Yes" << std::endl;
     std::cout << "2. No" << std::endl;
