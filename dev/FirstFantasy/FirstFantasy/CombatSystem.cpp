@@ -6,6 +6,7 @@
 
 #include "CombatSystem.h"
 #include "ItemManager.h"
+#include "Menu.h"
 
 //Default Constructor. 
 CombatSystem::CombatSystem() {
@@ -50,37 +51,50 @@ void CombatSystem::PlayerTurn(Character& activeCharacter, Enemy& enemy, Inventor
     {
         return;
     }
+    Menu::SetTextColor(Menu::GREEN);
+    std::cout << "\n+----------------------------------------------------------+\n";
 
-    std::cout << "\n=================================================================\n";
-    std::cout << activeCharacter.GetName() << "'s Turn\n";
-    std::cout << "=================================================================\n";
+    Menu::SetTextColor(Menu::GOLD);
+    std::cout << "  " << activeCharacter.GetName() << " - COMMAND\n";
 
-    std::cout << "HP: " << activeCharacter.GetHP() << "\n";
-    std::cout << "Ase: " << activeCharacter.GetAse() << "\n";
+    Menu::SetTextColor(Menu::GREEN);
+    std::cout << "+----------------------------------------------------------+\n";
+
+    Menu::SetTextColor(Menu::IVORY);
+    std::cout << "  HP: " << activeCharacter.GetHP()
+        << "/" << activeCharacter.GetMaxHP()
+        << "    Ase: " << activeCharacter.GetAse() << "\n";
 
     //Retrieve the character's learned abilities.
     const std::vector<Ability>& abilities = activeCharacter.GetAbilities();
 
     while (true) {
+        Menu::SetTextColor(Menu::GREEN);
+        std::cout << "------------------------------------------------------------\n";
 
-        //Display basic attack.
-        std::cout << "\n1. Attack\n";
+        Menu::SetTextColor(Menu::IVORY);
+        std::cout << "  1. Attack\n";
 
-        //Display learned abilities.
+        // Display learned abilities dynamically.
         for (size_t i = 0; i < abilities.size(); ++i)
         {
-            std::cout << i + 2 << ". "
+            std::cout << "  " << i + 2 << ". "
                 << abilities[i].GetAbilityName()
                 << " (Ase: " << abilities[i].GetAseCost() << ")\n";
         }
 
-        //v.04 Display Item After the learned abilities. 
+        // Keep Item's number after all learned abilities.
         int itemChoice = static_cast<int>(abilities.size()) + 2;
 
-        std::cout << itemChoice << ". Item\n";
+        std::cout << "  " << itemChoice << ". Item\n";
 
-        std::cout << "Choose an Action: ";
+        Menu::SetTextColor(Menu::GREEN);
+        std::cout << "+----------------------------------------------------------+\n";
 
+        Menu::SetTextColor(Menu::GOLD);
+        std::cout << "  Choose an Action: ";
+
+        Menu::SetTextColor(Menu::IVORY);
         std::string input;
         int choice = -1;
 
@@ -131,11 +145,34 @@ void CombatSystem::PlayerTurn(Character& activeCharacter, Enemy& enemy, Inventor
 
             enemy.SetHP(enemy.GetHP() - Damage);
 
-            std::cout << "\n" << activeCharacter.GetName()
-                << " attacks " << enemy.GetName()
-                << " for " << Damage << " damage!\n";
+            // =========================================
+            // CLASSIC RPG BATTLE MESSAGE WINDOW
+            // =========================================
 
-            std::cout << "HP: " << enemy.GetHP() << "\n";
+            Menu::SetTextColor(Menu::GREEN);
+            std::cout << "\n+----------------------------------------------------------+\n";
+
+            Menu::SetTextColor(Menu::GOLD);
+            std::cout << "                      BATTLE LOG\n";
+
+            Menu::SetTextColor(Menu::GREEN);
+            std::cout << "+----------------------------------------------------------+\n";
+
+            Menu::SetTextColor(Menu::IVORY);
+            std::cout << "  " << activeCharacter.GetName()
+                << " attacks " << enemy.GetName() << "!\n";
+
+            Menu::SetTextColor(Menu::RED);
+            std::cout << "  " << enemy.GetName()
+                << " takes " << Damage << " damage!\n";
+
+            Menu::SetTextColor(Menu::IVORY);
+            std::cout << "  Enemy HP: " << std::max(0, enemy.GetHP()) << "\n";
+
+            Menu::SetTextColor(Menu::GREEN);
+            std::cout << "+----------------------------------------------------------+\n";
+
+            Menu::SetTextColor(Menu::IVORY);
         }
 
         //=========================================
@@ -169,67 +206,109 @@ void CombatSystem::PlayerTurn(Character& activeCharacter, Enemy& enemy, Inventor
                 activeCharacter.GetAse() - selectedAbility.GetAseCost()
             );
 
-            std::cout << "\n" << activeCharacter.GetName() << " uses " << selectedAbility.GetAbilityName() << "!\n";
+            // =========================================
+            // ABILITY BATTLE MESSAGE WINDOW
+            // =========================================
 
+            Menu::SetTextColor(Menu::GREEN);
+            std::cout << "\n+----------------------------------------------------------+\n";
+
+            Menu::SetTextColor(Menu::GOLD);
+            std::cout << "                      ABILITY USED\n";
+
+            Menu::SetTextColor(Menu::GREEN);
+            std::cout << "+----------------------------------------------------------+\n";
+
+            Menu::SetTextColor(Menu::IVORY);
+            std::cout << "  " << activeCharacter.GetName() << " uses ";
+
+            Menu::SetTextColor(Menu::GOLD);
+            std::cout << selectedAbility.GetAbilityName() << "!\n";
+
+            Menu::SetTextColor(Menu::GREEN);
+            std::cout << "+----------------------------------------------------------+\n";
+
+            Menu::SetTextColor(Menu::IVORY);
             //============================
             //v.04 Healing Rain 
             //============================
-            if (selectedAbility.GetAbilityName() == "Healing Rain") {
+            if (selectedAbility.GetAbilityName() == "Healing Rain")
+            {
+                const int HealingAmount = selectedAbility.GetAbilityPower();
 
-                const int HealingAmount = selectedAbility.GetAbilityPower(); 
+                Menu::SetTextColor(Menu::GOLD);
+                std::cout << "\n                  HEALING RAIN\n";
 
-                //Heal Ora without exceeding maximum HP. 
-                if (OraKanu.GetHP() > 0) {
-                    int missingHP = OraKanu.GetMaxHP() - OraKanu.GetHP(); 
+                Menu::SetTextColor(Menu::GREEN);
+                std::cout << "------------------------------------------------------------\n";
 
-                    int actualHealing = std::min(HealingAmount, missingHP); 
-
-                    std::cout << OraKanu.GetName() << " restores " << actualHealing << " HP!\n"; 
-                }
-                //Heal Mbatha without exceeding maximum HP. 
-                if (Mbatha.GetHP() > 0) {
-                    int missingHP = Mbatha.GetMaxHP() - Mbatha.GetHP();
-
+                // Heal Ora'Kanu without exceeding maximum HP.
+                if (OraKanu.GetHP() > 0)
+                {
+                    int missingHP = OraKanu.GetMaxHP() - OraKanu.GetHP();
                     int actualHealing = std::min(HealingAmount, missingHP);
 
-                    std::cout << Mbatha.GetName() << " restores " << actualHealing << " HP!\n";
+                    Menu::SetTextColor(Menu::GREEN);
+                    std::cout << "  " << OraKanu.GetName()
+                        << " restores " << actualHealing << " HP!\n";
                 }
-                std::cout << activeCharacter.GetName() << " Ase: " << activeCharacter.GetAse() << "\n"; 
 
-                return; //Healing rain ends the characters turn.
+                // Heal M'Batha without exceeding maximum HP.
+                if (Mbatha.GetHP() > 0)
+                {
+                    int missingHP = Mbatha.GetMaxHP() - Mbatha.GetHP();
+                    int actualHealing = std::min(HealingAmount, missingHP);
+
+                    Menu::SetTextColor(Menu::GREEN);
+                    std::cout << "  " << Mbatha.GetName()
+                        << " restores " << actualHealing << " HP!\n";
+                }
+
+                Menu::SetTextColor(Menu::GOLD);
+                std::cout << "\n  " << activeCharacter.GetName()
+                    << " Ase: " << activeCharacter.GetAse() << "\n";
+
+                // Close the ability battle window.
+                Menu::SetTextColor(Menu::GREEN);
+                std::cout << "+----------------------------------------------------------+\n";
+
+                Menu::SetTextColor(Menu::IVORY);
+
+                return; // Healing Rain ends the character's turn.
             }
 
             //=========================================
             // Status Effect Application
             //=========================================
-            if (selectedAbility.GetStatusEffect() != AbilityStatus::None)
+            if (enemy.GetStatus() == AbilityStatus::Wet)
             {
-                static std::mt19937 generator(std::random_device{}());
+                Menu::SetTextColor(Menu::GREEN);
+                std::cout << "\n  " << enemy.GetName() << " is now ";
 
-                std::uniform_int_distribution<int> statusRoll(1, 100);
-
-                int roll = statusRoll(generator);
-
-                if (roll <= selectedAbility.GetStatusChance())
-                {
-                    enemy.SetStatus(selectedAbility.GetStatusEffect());
-
-                    if (enemy.GetStatus() == AbilityStatus::Wet)
-                    {
-                        std::cout << "\n" << enemy.GetName()
-                            << " is now Wet!\n";
-                    }
-                    else if (enemy.GetStatus() == AbilityStatus::Stun) {
-                        std::cout << "\n" << enemy.GetName() << " has been stunned!\n";
-                    }
-                    else if (enemy.GetStatus() == AbilityStatus::Poison) {
-                        std::cout << "\n" << enemy.GetName() << " has been poisoned!\n";
-                    }
-                    else if (enemy.GetStatus() == AbilityStatus::Bleed) {
-                        std::cout << "\n" << enemy.GetName() << " is now bleeding!\n";
-                    }
-                }
+                Menu::SetTextColor(Menu::IVORY);
+                std::cout << "WET!\n";
             }
+            else if (enemy.GetStatus() == AbilityStatus::Stun)
+            {
+                Menu::SetTextColor(Menu::GOLD);
+                std::cout << "\n  " << enemy.GetName()
+                    << " has been STUNNED!\n";
+            }
+            else if (enemy.GetStatus() == AbilityStatus::Poison)
+            {
+                Menu::SetTextColor(Menu::GREEN);
+                std::cout << "\n  " << enemy.GetName()
+                    << " has been POISONED!\n";
+            }
+            else if (enemy.GetStatus() == AbilityStatus::Bleed)
+            {
+                Menu::SetTextColor(Menu::RED);
+                std::cout << "\n  " << enemy.GetName()
+                    << " is now BLEEDING!\n";
+            }
+
+            // Always restore the default color.
+            Menu::SetTextColor(Menu::IVORY);
 
             //=========================================
             // Ability Damage
@@ -261,14 +340,25 @@ void CombatSystem::PlayerTurn(Character& activeCharacter, Enemy& enemy, Inventor
 
             if (Damage > 0)
             {
-                std::cout << enemy.GetName()
+                Menu::SetTextColor(Menu::RED);
+                std::cout << "\n  " << enemy.GetName()
                     << " takes " << Damage << " damage!\n";
 
-                std::cout << "HP: " << enemy.GetHP() << "\n";
+                Menu::SetTextColor(Menu::IVORY);
+                std::cout << "  Enemy HP: "
+                    << std::max(0, enemy.GetHP()) << "\n";
             }
 
-            std::cout << activeCharacter.GetName()
+            // Display remaining Ase.
+            Menu::SetTextColor(Menu::GOLD);
+            std::cout << "  " << activeCharacter.GetName()
                 << " Ase: " << activeCharacter.GetAse() << "\n";
+
+            // Close the ability results window.
+            Menu::SetTextColor(Menu::GREEN);
+            std::cout << "+----------------------------------------------------------+\n";
+
+            Menu::SetTextColor(Menu::IVORY);
         }
         return;
     }
@@ -386,7 +476,7 @@ void CombatSystem::EnemyTurn(Enemy& Enemy, Character& OraKanu, Character& MBatha
 
     if (action == 0)
     {
-        //Perform a basic attack.
+        // Calculate and apply damage.
         int Damage = CalculateDamage(
             Enemy.GetAttack(),
             Target->GetDefense()
@@ -394,18 +484,59 @@ void CombatSystem::EnemyTurn(Enemy& Enemy, Character& OraKanu, Character& MBatha
 
         Target->SetHP(Target->GetHP() - Damage);
 
-        std::cout << "\n" << Enemy.GetName()
-            << " attacks " << Target->GetName()
-            << " for " << Damage << " damage!\n";
+        // =========================================
+        // ENEMY BASIC ATTACK BATTLE WINDOW
+        // =========================================
+
+        Menu::SetTextColor(Menu::GREEN);
+        std::cout << "\n+----------------------------------------------------------+\n";
+
+        Menu::SetTextColor(Menu::RED);
+        std::cout << "                     ENEMY ATTACK\n";
+
+        Menu::SetTextColor(Menu::GREEN);
+        std::cout << "+----------------------------------------------------------+\n";
+
+        Menu::SetTextColor(Menu::IVORY);
+        std::cout << "  " << Enemy.GetName()
+            << " attacks " << Target->GetName() << "!\n";
+
+        Menu::SetTextColor(Menu::RED);
+        std::cout << "  " << Target->GetName()
+            << " takes " << Damage << " damage!\n";
+
+        Menu::SetTextColor(Menu::IVORY);
+        std::cout << "  Remaining HP: "
+            << std::max(0, Target->GetHP()) << "\n";
+
+        Menu::SetTextColor(Menu::GREEN);
+        std::cout << "+----------------------------------------------------------+\n";
+
+        Menu::SetTextColor(Menu::IVORY);
     }
     else
     {
-        //Retrieve the selected ability.
         const Ability& selectedAbility = abilities[action - 1];
+        // =========================================
+ // ENEMY ABILITY BATTLE WINDOW
+ // =========================================
 
-        std::cout << "\n" << Enemy.GetName()
-            << " uses " << selectedAbility.GetAbilityName()
-            << "!\n";
+        Menu::SetTextColor(Menu::GREEN);
+        std::cout << "\n+----------------------------------------------------------+\n";
+
+        Menu::SetTextColor(Menu::RED);
+        std::cout << "                     ENEMY ABILITY\n";
+
+        Menu::SetTextColor(Menu::GREEN);
+        std::cout << "+----------------------------------------------------------+\n";
+
+        Menu::SetTextColor(Menu::IVORY);
+        std::cout << "  " << Enemy.GetName() << " uses ";
+
+        Menu::SetTextColor(Menu::GOLD);
+        std::cout << selectedAbility.GetAbilityName() << "!\n";
+
+        Menu::SetTextColor(Menu::IVORY);
 
         //Calculate ability damage.
         int Damage = 0;
@@ -426,8 +557,11 @@ void CombatSystem::EnemyTurn(Enemy& Enemy, Character& OraKanu, Character& MBatha
 
             Target->SetHP(Target->GetHP() - Damage);
 
-            std::cout << Target->GetName()
+            Menu::SetTextColor(Menu::RED);
+            std::cout << "  " << Target->GetName()
                 << " takes " << Damage << " damage!\n";
+
+            Menu::SetTextColor(Menu::IVORY);
         }
 
         //Attempt to apply a status effect.
@@ -440,8 +574,15 @@ void CombatSystem::EnemyTurn(Enemy& Enemy, Character& OraKanu, Character& MBatha
             {
                 Target->SetStatus(selectedAbility.GetStatusEffect());
 
-                std::cout << Target->GetName()
+                Menu::SetTextColor(Menu::GOLD);
+                std::cout << "  " << Target->GetName()
                     << " has been afflicted with a status effect!\n";
+
+                Menu::SetTextColor(Menu::IVORY);
+                Menu::SetTextColor(Menu::GREEN);
+                std::cout << "+----------------------------------------------------------+\n";
+
+                Menu::SetTextColor(Menu::IVORY);
             }
         }
     }
@@ -465,11 +606,25 @@ CombatResult CombatSystem::StartCombat(Character& OraKanu, Character& MBatha, En
     MBatha.SetStatus(AbilityStatus::None); 
     Enemy.SetStatus(AbilityStatus::None); 
 
-	std::cout << "\n=================================================================\n";
-	std::cout <<                             "Combat Start"; 
-	std::cout << "\n=================================================================\n";
+    
+    //Display the combat screen heading.
+        Menu::ClearScreen();
 
-	std::cout << "\nA " << Enemy.GetName() << " appears!\n"; 
+    Menu::SetTextColor(Menu::GREEN);
+    std::cout << "\n============================================================\n";
+
+    Menu::SetTextColor(Menu::GOLD);
+    std::cout << "                 FIRST FANTASY: COMBAT\n";
+
+    Menu::SetTextColor(Menu::GREEN);
+    std::cout << "============================================================\n";
+
+    // Display the enemy encounter.
+    Menu::SetTextColor(Menu::RED);
+    std::cout << "\n              [ " << Enemy.GetName() << " ]\n";
+
+    Menu::SetTextColor(Menu::IVORY);
+    std::cout << "\nA " << Enemy.GetName() << " appears!\n";
 
 	//Determine turn order once per battle. 
 	CreateTurnOrder(); 
@@ -478,6 +633,7 @@ CombatResult CombatSystem::StartCombat(Character& OraKanu, Character& MBatha, En
 	std::cout << "\nTurn Order: \n"; 
 
 	for (CombatTurn Turn : mTurnOrder) {
+
 		switch (Turn) {
 		case CombatTurn::OraKanu:
 			std::cout << "- " << OraKanu.GetName() << "\n"; 
@@ -494,46 +650,62 @@ CombatResult CombatSystem::StartCombat(Character& OraKanu, Character& MBatha, En
 	}
 	int round = 1; 
 
-	//Continue until either the enemy or the party is defeated. 
-	while (Enemy.GetHP() > 0 && !IsPartyDefeated(OraKanu, MBatha)) {
-		std::cout << "\n=================================\n";
-		std::cout << "             ROUND " << round << "\n";
-		std::cout << "=================================\n";
+    while (Enemy.GetHP() > 0 && !IsPartyDefeated(OraKanu, MBatha))
+    {
+        // Process combatants in their turn order.
+        for (CombatTurn Turn : mTurnOrder)
+        {
+            if (Enemy.GetHP() <= 0 || IsPartyDefeated(OraKanu, MBatha))
+            {
+                break;
+            }
 
-	//Process combatants in their turn order. 
-		for (CombatTurn Turn : mTurnOrder) {
-			//End the round immediately if combat is over. 
-			if (Enemy.GetHP() <= 0 || IsPartyDefeated(OraKanu, MBatha)) {
-				break;
-			}
-			switch (Turn) {
-			case CombatTurn::OraKanu: PlayerTurn(OraKanu, Enemy, Inventory, OraKanu, MBatha); 
-				break;
+            // Your existing battlefield redraw code goes HERE.
+            // Keep lines 709–747 exactly as they are.
 
-			case CombatTurn::MBatha: PlayerTurn(MBatha, Enemy, Inventory, OraKanu, MBatha); 
-				break; 
+            switch (Turn)
+            {
+            case CombatTurn::OraKanu:
+                PlayerTurn(OraKanu, Enemy, Inventory, OraKanu, MBatha);
+                break;
 
-			case CombatTurn::Enemy: EnemyTurn(Enemy, OraKanu, MBatha);
-				break;
-			}
-		}
-		//Advance to the next round. 
-		++round; 
-	}
+            case CombatTurn::MBatha:
+                PlayerTurn(MBatha, Enemy, Inventory, OraKanu, MBatha);
+                break;
 
-	//Determine the combat result. 
-	if (Enemy.GetHP() <= 0)
-	{
-		std::cout << "\n=================================\n";
-		std::cout << "             VICTORY!            \n";
-		std::cout << "=================================\n";
+            case CombatTurn::Enemy:
+                EnemyTurn(Enemy, OraKanu, MBatha);
+                break;
+            }
 
-		return CombatResult::Victory;
-	}
+            Menu::SetTextColor(Menu::GOLD);
+            std::cout << "\nPress ENTER for the next turn...";
 
-	std::cout << "\n=================================\n";
-	std::cout << "              DEFEAT             \n";
-	std::cout << "=================================\n";
+            Menu::SetTextColor(Menu::IVORY);
 
-	return CombatResult::Defeat;
-}
+            std::string turnInput;
+            std::getline(std::cin, turnInput);
+
+        } // Closes the FOR loop
+
+        ++round;
+
+    } // Closes the WHILE loop
+
+    // Victory and defeat checks remain INSIDE StartCombat().
+    if (Enemy.GetHP() <= 0)
+    {
+        std::cout << "\n=================================\n";
+        std::cout << "             VICTORY!            \n";
+        std::cout << "=================================\n";
+
+        return CombatResult::Victory;
+    }
+
+    std::cout << "\n=================================\n";
+    std::cout << "              DEFEAT             \n";
+    std::cout << "=================================\n";
+
+    return CombatResult::Defeat;
+
+} // Closes StartCombat()
